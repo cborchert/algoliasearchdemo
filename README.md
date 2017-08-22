@@ -7,11 +7,17 @@ Things you may want to cover:
 
 * Ruby version
 
-Built on Ruby version 2.4.1 to take advantage of the webpacker gem
+Built on Ruby version 2.4.1 to take advantage of the webpacker gem. See this (Medium post)[https://medium.com/statuscode/introducing-webpacker-7136d66cddfb] or (this one)[https://medium.com/@hpux/rails-5-1-loves-javascript-a1d84d5318b] for more information.
 
 * System dependencies
 
 * Configuration
+
+Algolia credentials live in `config/initializers/algoliasearch.rb`
+
+* Rake tasks
+
+If you ever need to repopulate the model/index from movies.json, use `rake algolia:populate_from_json`.
 
 * Database creation
 

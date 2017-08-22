@@ -6,9 +6,9 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-puts "Loading movies from ./movies.json"
+puts "Retrieving movies from ./movies.json"
 movies = JSON.parse(File.read('movies.json'))
-puts "Loaded #{movies.count()}!"
+puts "Retrieved #{movies.count()}!"
 
 puts "Populating movie model"
 i = 1
