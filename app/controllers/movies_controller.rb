@@ -5,15 +5,10 @@ class MoviesController < ApplicationController
     end
 
     def create
-
         Movie.without_auto_index do
             @movie = Movie.create(movie_params);
-            # set new movie objectID based on last id in db
-            # this will allow us to save the movie directly and push into the db
-            # what we should be doing, since this will possibly create messes with several operations at once,
-            # is to go ahead and create the record, with Movie.without_auto_index
-            # then to update it.
-            #@movie.objectID = Movie.maximum(:id).next
+            # set new movie objectID based on its id
+            # this is necessary for the
             @movie.objectID = @movie.id
             @movie.save
             respond_to do |format|
@@ -21,6 +16,14 @@ class MoviesController < ApplicationController
             end
         end
         Movie.reindex
+    end
+
+    def destroy
+        Movie.find(params[:id]).destroy
+        respond_to do |format|
+            msg = { :status => "ok", :message => "Movie with id #{params[:id]} deleted" }
+            format.json { render :json => msg }
+        end
     end
 
     private
