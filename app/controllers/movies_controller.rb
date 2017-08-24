@@ -20,10 +20,9 @@ class MoviesController < ApplicationController
 
     def destroy
         Movie.find(params[:id]).destroy
-        respond_to do |format|
-            msg = { :status => "ok", :message => "Movie with id #{params[:id]} deleted" }
-            format.json { render :json => msg }
-        end
+        Movie.reindex
+        msg = { :status => "ok", :message => "Movie with id #{params[:id]} deleted" }
+        render :json => msg
     end
 
     private

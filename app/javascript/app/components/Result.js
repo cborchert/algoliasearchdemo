@@ -15,11 +15,8 @@ export default function Result(props) {
             <div className="result__image-container">
                 <img src={props.resultObject.image} className="result__image"/>
             </div>
-            <h2 className="result__title">{props.resultObject.title}</h2>
-            <h5>genres</h5>
-            <ul>
-                {props.resultObject.genre.map((genre, i) => <li key={i}>{genre}</li>)}
-            </ul>
+            <div className="result__title">{props.resultObject.title}</div>
+            <div className="result__delete" onClick={()=>{props.deleteMovie(props.resultObject.objectID)}}>(delete)</div>
         </div>
     );
 }

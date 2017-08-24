@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import algoliasearch from 'algoliasearch';
 import SearchBar from './components/SearchBar';
 import Results from './components/Results';
+import api from './API';
 import './styles/common.scss';
+import './styles/App.scss';
 
 export default class App extends Component {
 
@@ -13,16 +15,36 @@ export default class App extends Component {
 
         this.state = {
             searchValue: '',
-            searchResults: []
+            searchResults: [],
+            deletedIndices: []
         };
 
         //https://github.com/algolia/algoliasearch-client-javascript#nodejs--react-native--browserify--webpack
         //https://www.algolia.com/doc/api-client/javascript/getting-started/
-        //We will not be needing to change anything on the client, or to access it after this
-        //The index should be available though
-        const client = algoliasearch('H6LCFN7QUX', 'fd23d200ccc13ded45de9820fce938de');
-        this.index = client.initIndex('technical_test_movies');
+        //We are making the client available in order to be able to clear the cache
+        this.client = algoliasearch('H6LCFN7QUX', 'fd23d200ccc13ded45de9820fce938de');
+        this.index = this.client.initIndex('technical_test_movies');
 
+    }
+
+    runAlgoliaQuery(queryString){
+        this.index.clearCache();
+        this.index.search(queryString, function searchDone(err, content) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            //Let's remove any hits that match our deleted indices (since we might be pulling up old data!)
+
+            let hits = content.hits.filter( hit => this.state.deletedIndices.indexOf(hit.objectID) == -1 );
+            this.setState({searchResults: hits});
+        }.bind(this));
+    }
+
+    updateResults(){
+        //Need to clear the cache in order for deleted queries not to show up again
+        this.setState({deletedIndices: []});
+        this.runAlgoliaQuery(this.state.searchValue);
     }
 
     handleSearchChange(event){
@@ -32,13 +54,22 @@ export default class App extends Component {
             searchValue: query
         });
 
-        this.index.search(query, function searchDone(err, content) {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            this.setState({searchResults: content.hits});
-        }.bind(this));
+        this.runAlgoliaQuery(query);
+
+    }
+
+    deleteMovie(id){
+        console.log('deleting '+id);
+        //Remove the hit from the results preemptively (assume success)
+        let results = this.state.searchResults.filter(result => result.objectID !== id),
+            deletedIndices = this.state.deletedIndices;
+        deletedIndices.push(id);
+        this.setState({searchResults: results, deletedIndices});
+        api.deleteMovie(id, this.updateResults.bind(this));
+    }
+
+    componentDidMount() {
+        this.runAlgoliaQuery(this.state.searchValue);
     }
 
     //TODO: shouldComponentUpdate to determine if we need to update the app -- or simply pass it into the query container
@@ -46,9 +77,9 @@ export default class App extends Component {
 
         //<Results index={this.index} query={this.state.searchValue} />
         return (
-            <div>
+            <div className="app">
                 <SearchBar value={this.state.searchValue} onChange={this.handleSearchChange.bind(this)}/>
-                <Results hits={this.state.searchResults} />
+                <Results hits={this.state.searchResults} deleteMovie={this.deleteMovie.bind(this)}/>
             </div>
         );
     }

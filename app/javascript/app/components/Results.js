@@ -9,13 +9,6 @@ import '../styles/Results.scss';
 //TODO: proptypes
 class Results extends Component {
 
-    constructor(){
-        super();
-        // this.state = {
-        //     results: ''
-        // }
-    }
-
     shouldComponentUpdate(nextProps){
 
         if(this.props.hits.length !== nextProps.hits.length){
@@ -38,7 +31,7 @@ class Results extends Component {
     render() {
         console.log("Results Rendering");
         let hits = this.props.hits.map( (hit, i) => {
-            return <Result key={hit.objectID} resultObject={hit} />;
+            return <Result key={hit.objectID} resultObject={hit} deleteMovie={this.props.deleteMovie}/>;
         });
         return (
             <div className="results">

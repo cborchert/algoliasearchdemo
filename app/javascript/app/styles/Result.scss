@@ -1,18 +1,23 @@
 .result {
-    display: block;
-    float: left;
+    display: inline-block;
+    font-size: 1.6rem;
     padding: 2rem;
-    width: 25%;
+    // width: 25%;
+    width: calc(150px + 4rem);
+    min-height: calc(230px + 15rem);
+    vertical-align: middle;
     box-sizing: border-box;
 
     &__image-container {
         height: 230px;
+        max-width: 100%;
         text-align: center;
         margin: 0 auto;
     }
 
     &__image {
         max-height: 100%;
+        max-width: 100%;
         width: auto;
     }
 
