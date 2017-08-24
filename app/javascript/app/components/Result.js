@@ -8,10 +8,11 @@ import tinycolor from 'tinycolor2';
 //TODO: proptypes
 export default function Result(props) {
 
-    let theme = tinycolor(props.resultObject.color).isLight() ? 'light' : 'dark',
+    let color = props.resultObject.color ? props.resultObject.color : '#FFF',
+        theme = tinycolor(color).isLight() ? 'light' : 'dark',
         classes = 'result '+'result--'+theme;
     return (
-        <div className={classes} style={{background: props.resultObject.color}}>
+        <div className={classes} style={{background: color}}>
             <div className="result__image-container">
                 <img src={props.resultObject.image} className="result__image"/>
             </div>
