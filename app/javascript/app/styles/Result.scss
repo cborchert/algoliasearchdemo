@@ -1,0 +1,27 @@
+.result {
+    display: block;
+    float: left;
+    padding: 2rem;
+    width: 25%;
+    box-sizing: border-box;
+
+    &__image-container {
+        height: 230px;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    &__image {
+        max-height: 100%;
+        width: auto;
+    }
+
+
+    &--light {
+        color: #000;
+    }
+
+    &--dark {
+        color: #FFF;
+    }
+}
