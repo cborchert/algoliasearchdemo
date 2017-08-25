@@ -126,6 +126,14 @@ export default class AddMovie extends Component {
         });
     }
 
+    submitMovie(){
+        let movieObject = this.createMovieObject();
+        //TODO: validate movie object
+        //If all is not well, show form errors
+        //If all is well
+        this.props.addMovie(movieObject);
+    }
+
     // actor_facets: ["https://image.tmdb.org/t/p/w45/ezPYICJlhdPrFPp7wBFChZ5CpEC.jpg|Kristen Holden-Ried"]
     // actors: ["Kristen Holden-Ried"]
     // alternative_titles:["Retornados"]
@@ -195,6 +203,7 @@ export default class AddMovie extends Component {
                 <div onClick={this.addAlternativeTitle.bind(this)}>Add Alternative Title</div>
                 <h5>Preview</h5>
                 <Result resultObject={moviePreviewObject} />
+                <button onClick={this.submitMovie.bind(this)}> Submit </button>
             </div>
         );
     }

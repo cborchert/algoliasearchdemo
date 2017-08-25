@@ -26,18 +26,21 @@ export default class TextInput extends Component{
     }
 
     render(){
-        let styles = {};
+        let styles = {},
+            colorPreview = '';
         if(this.props.features && this.props.features.indexOf('previewColor') >= 0){
             styles.borderLeftColor = tinycolor(this.state.value).toHexString();
             styles.borderLeftStyle = "solid";
             styles.borderLeftWidth = "10px";
+            colorPreview = <div className="text-input__color-preview" style={{backgroundColor:tinycolor(this.state.value).toHexString()}}>color preview </div>;
         }
         return(
             <div>
-                <label>
-                    {this.props.label}
-                    <input value={this.state.value} onChange={this.handleChange.bind(this)} style={styles} />
-                </label>
+                <label>{this.props.label}</label>
+                <div>
+                    {colorPreview}
+                    <input value={this.state.value} onChange={this.handleChange.bind(this)} />
+                </div>
             </div>
         );
     }

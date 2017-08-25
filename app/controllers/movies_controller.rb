@@ -11,11 +11,9 @@ class MoviesController < ApplicationController
             # this is necessary for the
             @movie.objectID = @movie.id
             @movie.save
-            respond_to do |format|
-                format.json { render json: @movie }
-            end
         end
         Movie.reindex
+        render json: @movie
     end
 
     def destroy

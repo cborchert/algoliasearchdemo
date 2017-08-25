@@ -30,6 +30,8 @@ export default class App extends Component {
 
     runAlgoliaQuery(queryString){
         //Need to clear the cache in order for deleted queries not to show up again
+        console.log('clearing the search');
+        this.client.clearCache();
         this.index.clearCache();
         this.index.search(queryString, function searchDone(err, content) {
             if (err) {
@@ -62,6 +64,10 @@ export default class App extends Component {
         this.runAlgoliaQuery(query);
     }
 
+    addMovie(movieObject){
+        api.addMovie(movieObject, this.updateResults.bind(this));
+    }
+
     //TODO: In development, at least, the database gets locked when running several deletes consecutively, returning 500 errors
     deleteMovie(id){
         console.log('deleting '+id);
@@ -70,7 +76,7 @@ export default class App extends Component {
             deletedIndices = this.state.deletedIndices;
         deletedIndices.push(id);
         this.setState({searchResults: results, deletedIndices});
-        api.deleteMovie(id, ()=>{this.updateResults.bind(this, id)});
+        api.deleteMovie(id, ()=>{this.updateResults.call(this, id)});
     }
 
     componentDidMount() {
@@ -84,7 +90,7 @@ export default class App extends Component {
         return (
             <div className="app">
                 <SearchBar value={this.state.searchValue} onChange={this.handleSearchChange.bind(this)}/>
-                <AddMovie />
+                <AddMovie addMovie={this.addMovie.bind(this)}/>
                 <Results hits={this.state.searchResults} deleteMovie={this.deleteMovie.bind(this)}/>
             </div>
         );
