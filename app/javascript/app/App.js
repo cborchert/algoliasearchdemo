@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import algoliasearch from 'algoliasearch';
 import SearchBar from './components/SearchBar';
 import Results from './components/Results';
+import AddMovie from './components/AddMovie';
 import api from './API';
 import './styles/common.scss';
 import './styles/App.scss';
@@ -83,6 +84,7 @@ export default class App extends Component {
         return (
             <div className="app">
                 <SearchBar value={this.state.searchValue} onChange={this.handleSearchChange.bind(this)}/>
+                <AddMovie />
                 <Results hits={this.state.searchResults} deleteMovie={this.deleteMovie.bind(this)}/>
             </div>
         );

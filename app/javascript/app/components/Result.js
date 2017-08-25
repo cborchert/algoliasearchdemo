@@ -6,6 +6,7 @@ import tinycolor from 'tinycolor2';
 //We just receive state from the parent and pass the changed value back to the parent
 //TODO: Styling
 //TODO: proptypes
+//TODO: Add a confirmation before allowing delete
 export default function Result(props) {
 
     let color = props.resultObject.color ? props.resultObject.color : '#FFF',
