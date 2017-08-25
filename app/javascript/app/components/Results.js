@@ -30,12 +30,14 @@ class Results extends Component {
 
     render() {
         console.log("Results Rendering");
-        let hits = this.props.hits.map( (hit, i) => {
-            return <Result key={hit.objectID} resultObject={hit} deleteMovie={this.props.deleteMovie}/>;
-        });
+        let hits = '';
+        if( this.props.hits ){
+            hits = this.props.hits.map( (hit, i) => {
+                return <Result key={hit.objectID} resultObject={hit} order={2*(i+1)} deleteMovie={this.props.deleteMovie}/>;
+            });
+        }
         return (
             <div className="results">
-                <h1>Results go here</h1>
                 {hits}
             </div>
         );

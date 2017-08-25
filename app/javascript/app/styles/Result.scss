@@ -1,12 +1,16 @@
 .result {
-    display: inline-block;
+    // display: inline-block;
+    // display: block;
+    // float: left;
     font-size: 1.6rem;
     padding: 2rem;
     // width: 25%;
-    width: calc(150px + 4rem);
-    min-height: calc(230px + 15rem);
-    vertical-align: middle;
+    // width: calc(150px + 4rem);
+    // min-height: calc(230px + 15rem);
+    // vertical-align: middle;
+    flex-grow: 1;
     box-sizing: border-box;
+    transition: width 200ms;
 
     &__image-container {
         height: 230px;
