@@ -12,7 +12,7 @@ class NewMovieForm extends Component {
         super(props);
         this.state = {
             title: '',
-            color: '',
+            color: '#2c3e50',
             image: '',
             actors: [],
             actor_facets: [],
@@ -62,7 +62,8 @@ class NewMovieForm extends Component {
             genre: this.state.genre,
             rating: this.state.rating,
             score: this.state.score,
-            year: this.state.year
+            year: this.state.year,
+            alwaysUpdate: true
         };
 
         return movie;
@@ -160,7 +161,7 @@ class NewMovieForm extends Component {
         for (let key in nextProps) {
             if (key !== 'addMovie' && key !== 'closeForm' && nextProps[key] !== this.props[key]) {
                 shouldUpdate = true;
-                console.log(key, nextProps[key], this.props[key]);
+                // console.log(key, nextProps[key], this.props[key]);
                 break;
             }
         }
@@ -170,7 +171,7 @@ class NewMovieForm extends Component {
         for (let key in nextState) {
             if (nextState[key] !== this.state[key]) {
                 shouldUpdate = true;
-                console.log(key, nextState[key], this.state[key]);
+                // console.log(key, nextState[key], this.state[key]);
                 break;
             }
         }
@@ -230,7 +231,7 @@ class NewMovieForm extends Component {
             submitButtonClasses = movieErrorsArray.length == 0
                 ? 'button button--large new-movie-form__submit'
                 : 'button button--large new-movie-form__submit button--disabled';
-
+        console.log(moviePreviewObject);
         if (this.state.genre.length > 0) {
             genresInputs = this.state.genre.map((genre, i) => {
                 return (

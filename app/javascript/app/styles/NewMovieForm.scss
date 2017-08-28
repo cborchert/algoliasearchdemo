@@ -12,6 +12,7 @@
     box-sizing: border-box;
     box-shadow: $boxShadow;
     transition: 200ms;
+    z-index: 9000;
 
     &--open {
         opacity: 1;
