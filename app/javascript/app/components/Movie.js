@@ -13,21 +13,29 @@ class Movie extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expanded: false
+            expanded: false,
+            deleteMenuOpen: false
         }
     }
 
     toggleExpanded() {
-        let expanded = !this.state.expanded;
-        this.setState({expanded: expanded});
+        this.setState({
+            expanded: !this.state.expanded
+        });
+    }
+
+    toggleDeleteMenu() {
+        this.setState({
+            deleteMenuOpen: !this.state.deleteMenuOpen
+        });
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return this.props.movieObject.objectID !== nextProps.movieObject.objectID || this.state.expanded !== nextState.expanded;
+        return (this.props.movieObject.objectID !== nextProps.movieObject.objectID || this.state.expanded !== nextState.expanded || this.state.deleteMenuOpen !== nextState.deleteMenuOpen);
     }
 
     render() {
-        console.log('rendering movie');
+        // console.log('rendering movie');
         // console.log('rendering movie');
         let color = this.props.movieObject.color
                 ? this.props.movieObject.color
@@ -46,63 +54,78 @@ class Movie extends Component {
             actors = '',
             genres = '',
             deleteMovie = '',
+            rating = Number(this.props.movieObject.rating),
             ratingColor = '',
             ratingEmotion = '',
-            expandIcon = 'icon-enlarge';
+            expandIcon = 'icon-enlarge',
+            deleteMenu = '';
 
-        if (this.props.movieObject.rating <= 1) {
+        if (rating <= 1) {
             ratingEmotion = 'emote-crying';
-            ratingColor = '#c0392b';
-        } else if (this.props.movieObject.rating <= 2) {
+        } else if (rating <= 2) {
             ratingEmotion = 'emote-sad';
-            ratingColor = '#d35400';
-        } else if (this.props.movieObject.rating <= 2.5) {
+        } else if (rating <= 2.5) {
             ratingEmotion = 'emote-hmm';
-            ratingColor = '#f39c12';
-        } else if (this.props.movieObject.rating < 3) {
+        } else if (rating < 3) {
             ratingEmotion = 'emote-neutral';
-            ratingColor = '#8e44ad';
-        } else if (this.props.movieObject.rating < 4) {
+        } else if (rating < 4) {
             ratingEmotion = 'emote-smile';
-            ratingColor = '#2980b9';
-        } else if (this.props.movieObject.rating < 4.5) {
+        } else if (rating < 4.5) {
             ratingEmotion = 'emote-happy';
-            ratingColor = '#16a085';
         } else {
             ratingEmotion = 'emote-grin';
-            ratingColor = '#27ae60';
         }
         if (this.state.expanded) {
             classes += ' movie--expanded';
             expandIcon = 'icon-shrink';
-            alternativeTitles = (
-                <div className="movie__alternative-titles movie__additional">
-                    <h5 className="movie__detail__heading">Alternative Titles</h5>
-                    <ul className="movie__detail__text">
-                        {this.props.movieObject.alternative_titles.map((title, i) => <li className="movie__alternative-title" key={'alternative-title' + i}>{title}</li>)}
-                    </ul>
-                </div>
-            );
-            actors = (
-                <div className="movie__actors movie__additional">
-                    <h5 className="movie__detail__heading">Starring</h5>
-                    <p className="movie__detail__text">
-                        {this.props.movieObject.actors.join(', ')}
-                    </p>
-                </div>
-            );
-            genres = (
-                <div className="movie__genres movie__additional">
-                    <h5 className="movie__detail__heading">Genre</h5>
-                    <p className="movie__detail__text">
-                        {this.props.movieObject.genre.join(', ')}
-                    </p>
-                </div>
-            );
+            alternativeTitles = this.props.movieObject.alternative_titles.length > 0
+                ? (
+                    <div className="movie__alternative-titles movie__additional">
+                        <h5 className="movie__detail__heading">Alternative Titles</h5>
+                        <ul className="movie__detail__text">
+                            {this.props.movieObject.alternative_titles.map((title, i) => <li className="movie__alternative-title" key={'alternative-title' + i}>{title}</li>)}
+                        </ul>
+                    </div>
+                )
+                : '';
+            actors = this.props.movieObject.actors.length > 0
+                ? (
+                    <div className="movie__actors movie__additional">
+                        <h5 className="movie__detail__heading">Starring</h5>
+                        <p className="movie__detail__text">
+                            {this.props.movieObject.actors.join(', ')}
+                        </p>
+                    </div>
+                )
+                : '';
+            genres = this.props.movieObject.genre.length > 0
+                ? (
+                    <div className="movie__genres movie__additional">
+                        <h5 className="movie__detail__heading">Genre</h5>
+                        <p className="movie__detail__text">
+                            {this.props.movieObject.genre.join(', ')}
+                        </p>
+                    </div>
+                )
+                : '';
             deleteMovie = (
-                <div className="movie__delete movie__additional" onClick={() => {
-                    this.props.deleteMovie(this.props.movieObject.objectID)
-                }}><span className="movie__delete-icon icon-delete"/></div>
+                <div className="movie__delete movie__additional" onClick={this.toggleDeleteMenu.bind(this)}><span className="movie__delete-icon icon-delete"/></div>
+            );
+        }
+        if (this.state.deleteMenuOpen) {
+            classes += ' movie__delete-menu-open';
+            deleteMenu = (
+                <div className="movie__delete-menu movie__delete-menu--open">
+                    <div className="movie__delete-menu__inner">
+                        <h2>Are you sure you want to delete this movie?</h2>
+                        <p>
+                            <button className="button button--large movie__delete-menu__cancel" onClick={this.toggleDeleteMenu.bind(this)}>Cancel</button>
+                            <button className="button button--red button--large movie__delete-menu__delete" onClick={() => {
+                                this.props.deleteMovie(this.props.movieObject.objectID)
+                            }}>Delete</button>
+                        </p>
+                    </div>
+                </div>
             );
         }
         return (
@@ -114,7 +137,7 @@ class Movie extends Component {
                         <div className="movie__title" onClick={this.toggleExpanded.bind(this)}>{this.props.movieObject.title}</div>
                         <div className="movie__year">{this.props.movieObject.year}</div>
                         <div className="movie__rating">
-                            <span className={`movie__rating-icon icon-${ratingEmotion}-full`} alt={`Rated ${this.props.movieObject.rating}/5`} ariaLabel={`Rated ${this.props.movieObject.rating}/5`}/>
+                            <span className={`movie__rating-icon icon-${ratingEmotion}-full`} title={`Rated ${this.props.movieObject.rating}/5`}/>
                         </div>
                         {alternativeTitles}
                         {actors}
@@ -124,6 +147,7 @@ class Movie extends Component {
                 </div>
                 <div className="movie__expand" onClick={this.toggleExpanded.bind(this)}><span className={`movie__expand-icon ${expandIcon}`}/></div>
                 {deleteMovie}
+                {deleteMenu}
             </div>
         );
     }
@@ -131,11 +155,33 @@ class Movie extends Component {
 
 //PropTypes
 Movie.propTypes = {
-    className: PropTypes.string
+    className: PropTypes.string,
+    movieObject: PropTypes.shape({
+        title: PropTypes.string,
+        color: PropTypes.string,
+        year: PropTypes.string,
+        rating: PropTypes.string,
+        score: PropTypes.string,
+        genre: PropTypes.array,
+        alternative_titles: PropTypes.array,
+        actors: PropTypes.array,
+        actor_facets: PropTypes.array
+    })
 };
 
 Movie.defaultProps = {
-    className: ''
+    className: '',
+    movieObject: {
+        title: '',
+        color: '#34495e',
+        year: '',
+        rating: '',
+        score: '',
+        genre: [],
+        alternative_titles: [],
+        actors: [],
+        actor_facets: []
+    }
 }
 
 export default Movie;
