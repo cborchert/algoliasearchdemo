@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {GithubPicker} from 'react-color';
+import xss from 'xss';
 import TextInput from './TextInput';
 import Result from './Result';
 import '../styles/AddMovie.scss';
@@ -41,13 +42,14 @@ export default class AddMovie extends Component {
 
     createMovieObject(){
         //compose the actor facets
-        let actorFacetsLength = this.state.actors.length > this.state.actor_images.length ? this.state.actors.length : this.state.actor_images.length,
-            actorFacets = Array(actorFacetsLength);
+        let actor_facets = Array(this.state.actors.length);
+
         this.state.actor_images.forEach( (actorImage, i)=>{
-            actorFacets[i] = actorImage + '|';
+            actor_facets[i] = xss(actorImage) + '|';
+            actor
         });
         this.state.actors.forEach( (actor, i)=>{
-            actorFacets[i] += actor;
+            actor_facets[i] += xss(actor);
         });
 
         let movie = {
@@ -55,7 +57,7 @@ export default class AddMovie extends Component {
             image: this.state.image,
             color: this.state.color,
             actors: this.state.actors,
-            actor_facets: actorFacets,
+            actor_facets: actor_facets,
             alternative_titles: this.state.alternative_titles,
             genre: this.state.genre,
             rating: this.state.rating,
@@ -126,9 +128,19 @@ export default class AddMovie extends Component {
         });
     }
 
+    getMovieErrors(movieObject) {
+        let errors = [];
+        console.log('title', xss(movieObject.title).trim())
+        if(xss(movieObject.title).trim() === '') {
+            errors.push("A title is required");
+        }
+        return errors;
+    }
+
     submitMovie(){
-        let movieObject = this.createMovieObject();
         //TODO: validate movie object
+        //Movie title is not blank
+        let movieObject = this.createMovieObject();
         //If all is not well, show form errors
         //If all is well
         this.props.addMovie(movieObject);
@@ -152,7 +164,17 @@ export default class AddMovie extends Component {
             moviePreviewObject = this.createMovieObject(),
             actorsInputGroups = '',
             genresInputs = '',
-            alternativeTitlesInputs = '';
+            alternativeTitlesInputs = '',
+            movieErrorsArray = this.getMovieErrors(moviePreviewObject),
+            movieErrors = movieErrorsArray.length == 0 ? '' : (
+                <ul>
+                    {movieErrorsArray.map( (error, i) => {
+                        return <li key={i}>{error}</li>
+                    })}
+                </ul>);
+
+        console.log(movieErrorsArray);
+        console.log(movieErrors);
 
         if( this.state.genre.length > 0){
             genresInputs = this.state.genre.map( (genre, i) =>{
@@ -187,7 +209,7 @@ export default class AddMovie extends Component {
         }
         return (
             <div className="add-movie">
-                <TextInput label="title" keyName="title" onChange={this.handleChange.bind(this)} />
+                <TextInput label="title (required)" keyName="title" onChange={this.handleChange.bind(this)} />
                 <TextInput label="image url" keyName="image" onChange={this.handleChange.bind(this)} />
                 <TextInput label="color" keyName="color" onChange={this.handleChange.bind(this)} value={this.state.color} features={['previewColor']} />
                 <GithubPicker triangle="hide" colors={colors} color={this.state.color} onChange={(color)=>{console.log(color); this.handleChange('color', color.hex)}}/>
@@ -203,7 +225,8 @@ export default class AddMovie extends Component {
                 <div onClick={this.addAlternativeTitle.bind(this)}>Add Alternative Title</div>
                 <h5>Preview</h5>
                 <Result resultObject={moviePreviewObject} />
-                <button onClick={this.submitMovie.bind(this)}> Submit </button>
+                {movieErrors}
+                <button onClick={this.submitMovie.bind(this)} disabled={movieErrorsArray.length > 0}> Submit </button>
             </div>
         );
     }
