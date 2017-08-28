@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
-import '../styles/Movie.scss';
+import PropTypes from 'prop-types';
 import tinycolor from 'tinycolor2';
+import '../styles/Movie.scss';
 
 //The SearchBar component can be pure -- at this level of an application, we don't need internalized state.
 //We just receive state from the parent and pass the changed value back to the parent
 //TODO: Styling
 //TODO: proptypes
 //TODO: Add a confirmation before allowing delete
-export default class Movie extends Component {
+class Movie extends Component {
 
     constructor() {
         super();
@@ -30,8 +31,7 @@ export default class Movie extends Component {
             theme = tinycolor(color).isLight()
                 ? 'light'
                 : 'dark',
-            classes = 'movie ' +
-            'movie--' + theme,
+            classes = `movie movie--${theme} ${this.props.className}`,
             order = this.state.expanded
                 ? this.props.order
                 : this.props.order,
@@ -39,9 +39,9 @@ export default class Movie extends Component {
                 ? '100%'
                 : '20%',
             style = {
-                order: order,
+                // order: order,
                 backgroundColor: color,
-                width: width
+                // width: width
             };
         return (
             <div className={classes} style={style}>
@@ -49,8 +49,8 @@ export default class Movie extends Component {
                     <img src={this.props.movieObject.image} className="movie__image"/>
                 </div>
                 <div className="movie__title">{this.props.movieObject.title}</div>
-                <ul>
-                    {this.props.movieObject.actor_facets.map((facet, i) => <li key={'actor-' + i}><img src={facet.substring(0, facet.indexOf("|"))}/>{facet.substring(facet.indexOf("|") + 1)}</li>)}
+                <ul className="movie__actors">
+                    {this.props.movieObject.actor_facets.map((facet, i) => <li className="movie__actor" key={'actor-' + i}><img src={facet.substring(0, facet.indexOf("|"))}/>{facet.substring(facet.indexOf("|") + 1)}</li>)}
                 </ul>
                 <div className="movie__delete" onClick={() => {
                     this.props.deleteMovie(this.props.movieObject.objectID)
@@ -61,3 +61,14 @@ export default class Movie extends Component {
         );
     }
 }
+
+//PropTypes
+Movie.propTypes = {
+    className: PropTypes.string
+};
+
+Movie.defaultProps = {
+    className: ''
+}
+
+export default Movie;

@@ -22,7 +22,6 @@ class NewMovieForm extends Component {
             rating: '',
             score: '',
             year: '',
-            isOpen: this.props.isOpen,
             advancedOpen: false
         }
     }
@@ -151,9 +150,9 @@ class NewMovieForm extends Component {
             rating: '',
             score: '',
             year: '',
-            isOpen: false,
             advancedOpen: false
         }
+        this.props.closeForm();
     }
 
     //TODO: Form validation
@@ -182,15 +181,15 @@ class NewMovieForm extends Component {
                 "#ecf0f1",
                 "#bdc3c7"
             ],
-            formClasses = this.state.isOpen
+            formClasses = this.props.isOpen
                 ? 'new-movie-form new-movie-form--open'
                 : 'new-movie-form',
             advancedClasses = this.state.advancedOpen
                 ? 'new-movie-form__advanced new-movie-form__advanced--open'
                 : 'new-movie-form__advanced',
             advancedToggleButtonInner = this.state.advancedOpen
-                ? 'Show More'
-                : 'Show Less',
+                ? 'Show Less'
+                : 'Show More',
             moviePreviewObject = this.createMovieObject(),
             actorsInputGroups = '',
             genresInputs = '',
@@ -206,8 +205,8 @@ class NewMovieForm extends Component {
                     </ul>
                 ),
             submitButtonClasses = movieErrorsArray.length == 0
-                ? 'button new-movie-form__submit'
-                : 'button new-movie-form__submit button--disabled';
+                ? 'button button--large new-movie-form__submit'
+                : 'button button--large new-movie-form__submit button--disabled';
 
         if (this.state.genre.length > 0) {
             genresInputs = this.state.genre.map((genre, i) => {
@@ -248,38 +247,58 @@ class NewMovieForm extends Component {
         }
         return (
             <div className={formClasses}>
-                <button onClick={this.closeForm.bind(this)} className="button new-movie-form__close">
-                    Close
-                </button>
-                <TextInput className="new-movie-form__title-input" label="title (required)" keyName="title" onChange={this.handleChange.bind(this)}/>
-                <TextInput className="new-movie-form__image-input" label="image url" keyName="image" onChange={this.handleChange.bind(this)}/>
-                <TextInput className="new-movie-form__color-input" label="color" keyName="color" onChange={this.handleChange.bind(this)} value={this.state.color} features={['previewColor']}/>
-                <GithubPicker className="new-movie-form__color-picker" triangle="hide" colors={colors} color={this.state.color} onChange={(color) => {
-                    this.handleChange('color', color.hex)
-                }}/>
-                <div className={advancedClasses}>
-                    <button className="button new-movie-form__toggle-advanced" onClick={this.toggleAdvanced.bind(this)}>
-                        {advancedToggleButtonInner}
-                    </button>
-                    <div className="new-movie-form__advanced__inner">
-                        {alternativeTitlesInputs}
-                        <div className="new-movie-form__add-alternative-title" onClick={this.addAlternativeTitle.bind(this)}>Add Alternative Title</div>
-                        {actorsInputGroups}
-                        <div className="new-movie-form__add-actor" onClick={this.addActor.bind(this)}>Add Actor</div>
-                        {genresInputs}
-                        <div className="new-movie-form__add-genre" onClick={this.addGenre.bind(this)}>Add Genre</div>
-                        <TextInput className="new-movie-form__rating-input" label="rating" keyName="rating" onChange={this.handleChange.bind(this)}/>
-                        <TextInput className="new-movie-form__year-input" label="year" keyName="year" onChange={this.handleChange.bind(this)}/>
-                        <TextInput className="new-movie-form__score-input" label="score" keyName="score" onChange={this.handleChange.bind(this)}/>
+                <div className="new-movie-form__inner">
+                    <h2>New Movie</h2>
 
+                    <div className="new-movie-form__movie-preview">
+                        <h5>Preview</h5>
+                        <Movie className="new-movie-form__movie" movieObject={moviePreviewObject}></Movie>
+                    </div>
+
+                    <TextInput className="new-movie-form__title-input" label="title (required)" keyName="title" onChange={this.handleChange.bind(this)}/>
+                    <TextInput className="new-movie-form__image-input" label="image url" keyName="image" onChange={this.handleChange.bind(this)}/>
+                    <TextInput className="new-movie-form__color-input" label="color" keyName="color" onChange={this.handleChange.bind(this)} value={this.state.color} features={['previewColor']}/>
+                    <GithubPicker className="new-movie-form__color-picker" triangle="hide" colors={colors} color={this.state.color} onChange={(color) => {
+                        this.handleChange('color', color.hex)
+                    }}/>
+                    <div className={advancedClasses}>
+                        <button className="button new-movie-form__toggle-advanced" onClick={this.toggleAdvanced.bind(this)}>
+                            {advancedToggleButtonInner}
+                        </button>
+                        <div className="new-movie-form__advanced__inner">
+                            <div>
+                                <h5>Alternative Titles</h5>
+                                {alternativeTitlesInputs}
+
+                                <div className="new-movie-form__add-alternative-title" onClick={this.addAlternativeTitle.bind(this)}>Add Alternative Title</div>
+                            </div>
+                            <div>
+                                <h5>Actors</h5>
+                                {actorsInputGroups}
+                                <div className="new-movie-form__add-actor" onClick={this.addActor.bind(this)}>Add Actor</div>
+                            </div>
+                            <div>
+                                <h5>Genres</h5>
+                                {genresInputs}
+                                <div className="new-movie-form__add-genre" onClick={this.addGenre.bind(this)}>Add Genre</div>
+                            </div>
+                            <TextInput className="new-movie-form__rating-input" label="rating" keyName="rating" onChange={this.handleChange.bind(this)}/>
+                            <TextInput className="new-movie-form__year-input" label="year" keyName="year" onChange={this.handleChange.bind(this)}/>
+                            <TextInput className="new-movie-form__score-input" label="score" keyName="score" onChange={this.handleChange.bind(this)}/>
+
+                        </div>
+                    </div>
+
+                    <div className="new-movie-form__footer">
+                        {movieErrors}
+                        <button onClick={this.closeForm.bind(this)} className="button button--red button--large new-movie-form__close">
+                            Cancel
+                        </button>
+                        <button className={submitButtonClasses} onClick={this.submitMovie.bind(this)} disabled={movieErrorsArray.length > 0}>
+                            Submit
+                        </button>
                     </div>
                 </div>
-                <h5>Preview</h5>
-                <Movie movieObject={moviePreviewObject}></Movie>
-                {movieErrors}
-                <button className={submitButtonClasses} onClick={this.submitMovie.bind(this)} disabled={movieErrorsArray.length > 0}>
-                    Submit
-                </button>
             </div>
         );
     }
@@ -287,11 +306,13 @@ class NewMovieForm extends Component {
 
 //PropTypes
 NewMovieForm.propTypes = {
-    isOpen: PropTypes.bool
+    isOpen: PropTypes.bool,
+    closeForm: PropTypes.func
 };
 
 NewMovieForm.defaultProps = {
-    isOpen: false
+    isOpen: false,
+    closeForm: () => {}
 }
 
 export default NewMovieForm;

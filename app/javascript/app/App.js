@@ -17,7 +17,8 @@ export default class App extends Component {
         this.state = {
             searchValue: '',
             searchResults: [],
-            deletedIndices: []
+            deletedIndices: [],
+            formOpen: false
         };
 
         //https://github.com/algolia/algoliasearch-client-javascript#nodejs--react-native--browserify--webpack
@@ -66,6 +67,13 @@ export default class App extends Component {
         api.addMovie(movieObject, this.updateResults.bind(this));
     }
 
+    openForm() {
+        this.setState({formOpen: true})
+    }
+    closeForm() {
+        this.setState({formOpen: false})
+    }
+
     //TODO: In development, at least, the database gets locked when running several deletes consecutively, returning 500 errors
     deleteMovie(id) {
         console.log('deleting ' + id);
@@ -89,8 +97,9 @@ export default class App extends Component {
         //<Results index={this.index} query={this.state.searchValue} />
         return (
             <div className="app">
+                <button className="button" onClick={this.openForm.bind(this)}>New Movie</button>
                 <SearchBar value={this.state.searchValue} onChange={this.handleSearchChange.bind(this)}/>
-                <AddMovie addMovie={this.addMovie.bind(this)}/>
+                <NewMovieForm isOpen={this.state.formOpen} addMovie={this.addMovie.bind(this)} closeForm={this.closeForm.bind(this)}/>
                 <MovieGrid movies={this.state.searchResults} deleteMovie={this.deleteMovie.bind(this)}/>
             </div>
         );

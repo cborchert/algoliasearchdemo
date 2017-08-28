@@ -1,7 +1,62 @@
-.new-movie-form {
-    padding: 2rem;
+@import './vars';
 
-    input {
-        display: block;
+.new-movie-form {
+    position: fixed;
+    top: -200vh;
+    left: 50%;
+    width: calc(100vw - 4rem);
+    transform: translateX(-50%) translateY(-50%);
+    overflow-y: hidden;
+    max-width: 900px;
+    background-color: $white;
+    box-sizing: border-box;
+    box-shadow: $boxShadow;
+    transition: 200ms;
+
+    &--open {
+        opacity: 1;
+        top: 50%;
+    }
+
+    &__inner {
+        max-height: calc(100vh - 4rem);
+        padding: 2rem;
+        box-sizing: border-box;
+        overflow-y: auto;
+    }
+
+    &__advanced {
+        &__inner {
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 600ms;
+            opacity: 0;
+        }
+
+        &--open &__inner {
+            max-height: 100000px;
+            opacity: 1;
+            padding: 2rem 0;
+
+        }
+    }
+
+    &__movie-preview {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+    }
+
+    &__footer {
+        // position: absolute;
+        // bottom: 0;
+        // left: 0;
+        // width: 100%;
+        // height: 3rem;
+        // background: $white;
+        padding: 2rem 0 0;
+        // box-sizing: border-box;
+        text-align: right;
+        // z-index: 1000;
     }
 }

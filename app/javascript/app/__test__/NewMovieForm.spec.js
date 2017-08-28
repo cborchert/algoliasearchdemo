@@ -159,14 +159,6 @@ describe('<NewMovieForm />', () => {
         wrapper.update();
         expect(wrapper.find('.new-movie-form__advanced').is('.new-movie-form__advanced--open')).to.equal(false);
     });
-    it('responds to close button', () => {
-        wrapper.setState({isOpen: true});
-        wrapper.update();
-        expect(wrapper.find('.new-movie-form__close')).to.have.length('1');
-        expect(wrapper.is('.new-movie-form--open')).to.equal(true);
-        wrapper.setState({isOpen: false});
-        wrapper.update();
-    });
     it('renders a movie preview', () => {
         expect(wrapper.find(Movie)).to.have.length('1');
     });
