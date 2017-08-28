@@ -1,6 +1,7 @@
 import React from 'react';
 import NewMovieForm from '../components/NewMovieForm';
 import TextInput from '../components/TextInput';
+import Movie from '../components/Movie';
 
 //These tests are a bit too exhaustive -- the add/remove should be sufficient on the multi-tests
 describe('<NewMovieForm />', () => {
@@ -134,8 +135,8 @@ describe('<NewMovieForm />', () => {
         wrapper.update();
     });
     it('enables/disables submit button', () => {
-        expect(wrapper.find('button')).to.have.length('1');
-        expect(wrapper.find('button').is('.button--disabled')).to.equal(true);
+        expect(wrapper.find('button.new-movie-form__submit')).to.have.length('1');
+        expect(wrapper.find('button.new-movie-form__submit').is('.button--disabled')).to.equal(true);
     });
     it('renders error if no title', () => {
         expect(wrapper.find('.new-movie-form__errors')).to.have.length('1');
@@ -149,12 +150,12 @@ describe('<NewMovieForm />', () => {
         expect(wrapper.find('.new-movie-form__advanced')).to.have.length('1');
     });
     it('responds to expand advanced fields', () => {
-        expect(wrapper.find('.new-movie-form__open-advanced')).to.have.length('1');
+        expect(wrapper.find('.new-movie-form__toggle-advanced')).to.have.length('1');
         expect(wrapper.find('.new-movie-form__advanced').is('.new-movie-form__advanced--open')).to.equal(false);
-        wrapper.find('.new-movie-form__open-advanced').simulate('click');
+        wrapper.find('.new-movie-form__toggle-advanced').simulate('click');
         wrapper.update();
         expect(wrapper.find('.new-movie-form__advanced').is('.new-movie-form__advanced--open')).to.equal(true);
-        wrapper.find('.new-movie-form__open-advanced').simulate('click');
+        wrapper.find('.new-movie-form__toggle-advanced').simulate('click');
         wrapper.update();
         expect(wrapper.find('.new-movie-form__advanced').is('.new-movie-form__advanced--open')).to.equal(false);
     });
@@ -163,13 +164,54 @@ describe('<NewMovieForm />', () => {
         wrapper.update();
         expect(wrapper.find('.new-movie-form__close')).to.have.length('1');
         expect(wrapper.is('.new-movie-form--open')).to.equal(true);
-        wrapper.find('.new-movie-form__close').simulate('click');
-        expect(wrapper.is('.new-movie-form--open')).to.equal(false);
+        wrapper.setState({isOpen: false});
+        wrapper.update();
     });
     it('renders a movie preview', () => {
-        expect(false).to.eql(true);
+        expect(wrapper.find(Movie)).to.have.length('1');
     });
     it('passes correct props to movie preview', () => {
-        expect(false).to.eql(true);
+        wrapper.setState({
+            title: 'Hello World',
+            color: 'red',
+            image: 'http://i695.photobucket.com/albums/vv311/salem_apocalypse/takethis-1.jpg',
+            actors: [
+                'Steve Carrell', 'Olivia Wilde'
+            ],
+            actor_images: [
+                'https://image.tmdb.org/t/p/w45/70BJ9xbfkRtEWBeuMcAH8C9lhpA.jpg', 'https://image.tmdb.org/t/p/w45/3d69fgT1QOTDJxqy7FpBBAQxoM0.jpg'
+            ],
+            alternative_titles: [
+                'Salut, le Monde!', 'Hey, Earth...'
+            ],
+            genre: [
+                'action', 'adventure'
+            ],
+            rating: '5',
+            score: '4',
+            year: '1987'
+        });
+        wrapper.update();
+        let theProps = wrapper.find(Movie).first().props().movieObject;
+        console.log(theProps);
+        expect(theProps.title).to.equal('Hello World');
+        expect(theProps.color).to.equal('red');
+        expect(theProps.image).to.equal('http://i695.photobucket.com/albums/vv311/salem_apocalypse/takethis-1.jpg');
+        expect(theProps.actors).to.have.length('2');
+        expect(theProps.actors[0]).to.equal('Steve Carrell');
+        expect(theProps.actors[1]).to.equal('Olivia Wilde');
+        expect(theProps.actor_facets).to.have.length('2');
+        expect(theProps.actor_facets[0]).to.equal('https://image.tmdb.org/t/p/w45/70BJ9xbfkRtEWBeuMcAH8C9lhpA.jpg|Steve Carrell');
+        expect(theProps.actor_facets[1]).to.equal('https://image.tmdb.org/t/p/w45/3d69fgT1QOTDJxqy7FpBBAQxoM0.jpg|Olivia Wilde');
+        expect(theProps.alternative_titles).to.have.length('2');
+        expect(theProps.alternative_titles[0]).to.equal('Salut, le Monde!');
+        expect(theProps.alternative_titles[1]).to.equal('Hey, Earth...');
+        expect(theProps.genre).to.have.length('2');
+        expect(theProps.genre[0]).to.equal('action');
+        expect(theProps.genre[1]).to.equal('adventure');
+        expect(theProps.rating).to.equal('5');
+        expect(theProps.score).to.equal('4');
+        expect(theProps.year).to.equal('1987');
+
     });
 });
