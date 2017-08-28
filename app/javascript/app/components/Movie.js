@@ -10,8 +10,8 @@ import '../styles/Movie.scss';
 //TODO: Add a confirmation before allowing delete
 class Movie extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             expanded: false
         }
@@ -22,9 +22,13 @@ class Movie extends Component {
         this.setState({expanded: expanded});
     }
 
-    render() {
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.props.movieObject.objectID !== nextProps.movieObject.objectID || this.state.expanded !== nextState.expanded;
+    }
 
+    render() {
         console.log('rendering movie');
+        // console.log('rendering movie');
         let color = this.props.movieObject.color
                 ? this.props.movieObject.color
                 : '#FFF',
@@ -38,25 +42,53 @@ class Movie extends Component {
             width = this.state.expanded
                 ? '100%'
                 : '20%',
+            image = this.props.movieObject.image && this.props.movieObject.image !== ''
+                ? this.props.movieObject.image
+                : '',
             style = {
-                // order: order,
-                backgroundColor: color,
-                // width: width
+                backgroundColor: color
+            },
+            bgStyle = {
+                backgroundImage: `url(${image})`
+            },
+            innerStyle = {
+                backgroundColor: tinycolor(color).setAlpha(0.7).toRgbString()
             };
+
+        classes += this.state.expanded
+            ? ' movie--expanded'
+            : '';
         return (
             <div className={classes} style={style}>
-                <div className="movie__image-container">
-                    <img src={this.props.movieObject.image} className="movie__image"/>
+                <div className="movie__background" style={bgStyle}/>
+                <div className="movie__inner" style={innerStyle}>
+                    <img className="movie__image" src={image}/>
+                    <div className="movie__details">
+                        <div className="movie__title">{this.props.movieObject.title}</div>
+                        <div className="movie__alternative-titles movie__additional">
+                            <h5>Alternative Titles</h5>
+                            <ul>
+                                {this.props.movieObject.alternative_titles.map((title, i) => <li className="movie__alternative-title" key={'alternative-title' + i}>{title}</li>)}
+                            </ul>
+                        </div>
+                        <div className="movie__actors movie__additional">
+                            <h5>Starring</h5>
+                            <ul>
+                                {this.props.movieObject.actor_facets.map((facet, i) => <li className="movie__actor" key={'actor-' + i}><img className="movie__actor__image" src={facet.substring(0, facet.indexOf("|"))}/>{facet.substring(facet.indexOf("|") + 1)}</li>)}
+                            </ul>
+                        </div>
+                        <div className="movie__genres movie__additional">
+                            <h5>Genre</h5>
+                            <ul>
+                                {this.props.movieObject.genre.map((genre, i) => <li className="movie__genre" key={'genre-' + i}>{genre}</li>)}
+                            </ul>
+                        </div>
+                        <div className="movie__delete movie__additional" onClick={() => {
+                            this.props.deleteMovie(this.props.movieObject.objectID)
+                        }}>(delete)</div>
+                        <div className="movie__expand" onClick={this.toggleExpanded.bind(this)}>(expand)</div>
+                    </div>
                 </div>
-                <div className="movie__title">{this.props.movieObject.title}</div>
-                <ul className="movie__actors">
-                    {this.props.movieObject.actor_facets.map((facet, i) => <li className="movie__actor" key={'actor-' + i}><img src={facet.substring(0, facet.indexOf("|"))}/>{facet.substring(facet.indexOf("|") + 1)}</li>)}
-                </ul>
-                <div className="movie__delete" onClick={() => {
-                    this.props.deleteMovie(this.props.movieObject.objectID)
-                }}>(delete)</div>
-                <div className="movie__expand" onClick={this.toggleExpanded.bind(this)}>(expand)</div>
-
             </div>
         );
     }

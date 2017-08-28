@@ -155,10 +155,33 @@ class NewMovieForm extends Component {
         this.props.closeForm();
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        let shouldUpdate = false;
+        for (let key in nextProps) {
+            if (key !== 'addMovie' && key !== 'closeForm' && nextProps[key] !== this.props[key]) {
+                shouldUpdate = true;
+                console.log(key, nextProps[key], this.props[key]);
+                break;
+            }
+        }
+        if (shouldUpdate) {
+            return true;
+        }
+        for (let key in nextState) {
+            if (nextState[key] !== this.state[key]) {
+                shouldUpdate = true;
+                console.log(key, nextState[key], this.state[key]);
+                break;
+            }
+        }
+        return shouldUpdate;
+    }
+
     //TODO: Form validation
     //TODO: Submit form
     //TODO: Color input circle
     render() {
+        console.log('rendering movie form');
         let colors = [
                 "#e74c3c",
                 "#c0392b",

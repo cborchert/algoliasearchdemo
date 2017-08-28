@@ -21,6 +21,10 @@ export default class TextInput extends Component {
         }
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return nextState.value !== this.state.value;
+    }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.value && nextProps.value !== this.state.value) {
             this.setState({value: nextProps.value});
@@ -28,6 +32,7 @@ export default class TextInput extends Component {
     }
 
     render() {
+        console.log('rendering text');
         let styles = {},
             colorPreview = '',
             classes = 'text-input';

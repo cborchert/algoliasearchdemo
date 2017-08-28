@@ -1,18 +1,25 @@
-import React from 'react';
+import React, {Component} from 'react';
 import '../styles/SearchBar.scss';
 
 //The SearchBar component can be pure -- at this level of an application, we don't need internalized state.
 //We just receive state from the parent and pass the changed value back to the parent
 //TODO: Styling
 //TODO: proptypes
-export default function SearchBar(props) {
+export default class SearchBar extends Component {
 
-    let className = props.className
-        ? 'search-bar ' + props.className
-        : 'search-bar';
-    return (
-        <div className="search-bar-container">
-            <input className={className} value={props.value} onChange={props.onChange}/>
-        </div>
-    );
+    shouldComponentUpdate(nextProps) {
+        return this.props.className !== nextProps.className || this.props.value !== nextProps.value;
+    }
+
+    render() {
+        console.log('rendering search');
+        let className = this.props.className
+            ? 'search-bar ' + this.props.className
+            : 'search-bar';
+        return (
+            <div className="search-bar-container">
+                <input className={className} value={this.props.value} onChange={this.props.onChange}/>
+            </div>
+        );
+    }
 }

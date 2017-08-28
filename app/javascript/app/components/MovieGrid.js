@@ -13,14 +13,14 @@ class MovieGrid extends Component {
 
         if (this.props.movies.length !== nextProps.movies.length) {
             //If the hit lists are not the same length, we definitely need to update!
-            console.log('Hit lists not the same length. Let\'s update.');
+            // console.log('Hit lists not the same length. Let\'s update.');
             return true;
         } else {
             //Check whether each of the hits is the same and in the same order!
             let shouldUpdate = false;
-            this.props.movies.forEach(function compareMovies(mobie, i) {
+            this.props.movies.forEach(function compareMovies(movie, i) {
                 if (movie.objectID !== nextProps.movies[i].objectID) {
-                    console.log('Hit lists not identical. Let\'s update.');
+                    // console.log('Hit lists not identical. Let\'s update.');
                     shouldUpdate = true;
                 }
             });
@@ -29,9 +29,9 @@ class MovieGrid extends Component {
     }
 
     render() {
-        console.log("Results Rendering");
+        // console.log("Results Rendering");
         let movies = '';
-        if (this.props.movies) {
+        if (this.props.movies && this.props.movies.length > 0) {
             movies = this.props.movies.map((movie, i) => {
                 return <Movie key={movie.objectID} movieObject={movie} order={2 * (i + 1)} deleteMovie={this.props.deleteMovie}/>;
             });

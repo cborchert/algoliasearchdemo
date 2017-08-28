@@ -31,9 +31,10 @@ export default class App extends Component {
 
     runAlgoliaQuery(queryString) {
         //Need to clear the cache in order for deleted queries not to show up again
-        console.log('clearing the search');
-        this.client.clearCache();
-        this.index.clearCache();
+        // console.log('clearing the search');
+        // this.client.clearCache();
+        // this.index.clearCache();
+        console.log('running algolia search');
         this.index.search(queryString, function searchDone(err, content) {
             if (err) {
                 console.error(err);
@@ -41,17 +42,20 @@ export default class App extends Component {
             }
             //Let's remove any hits that match our deleted indices (since we might be pulling up old data!)
             let hits = content.hits.filter(hit => this.state.deletedIndices.indexOf(hit.objectID) == -1);
-            console.log(hits)
+            // console.log(hits)
             this.setState({searchResults: hits});
         }.bind(this));
     }
 
     updateResults(popDeletedId) {
-        if (popDeletedId) {
-            let deletedIndices = this.state.deletedIndices;
-            deletedIndicies = deletedIndicies.filter(id => id !== popDeletedId);
-            this.setState({deletedIndices});
-        }
+        console.log('updating results')
+        // this.client.clearCache();
+        // this.index.clearCache();
+        // if (popDeletedId) {
+        //     let deletedIndices = this.state.deletedIndices;
+        //     deletedIndicies = deletedIndicies.filter(id => id !== popDeletedId);
+        //     this.setState({deletedIndices});
+        // }
         this.runAlgoliaQuery(this.state.searchValue);
     }
 
@@ -76,7 +80,7 @@ export default class App extends Component {
 
     //TODO: In development, at least, the database gets locked when running several deletes consecutively, returning 500 errors
     deleteMovie(id) {
-        console.log('deleting ' + id);
+        // console.log('deleting ' + id);
         //Remove the hit from the results preemptively (assume success)
         let results = this.state.searchResults.filter(result => result.objectID !== id),
             deletedIndices = this.state.deletedIndices;
@@ -93,7 +97,7 @@ export default class App extends Component {
 
     //TODO: shouldComponentUpdate to determine if we need to update the app -- or simply pass it into the query container
     render() {
-
+        console.log('rendering app');
         //<Results index={this.index} query={this.state.searchValue} />
         return (
             <div className="app">
