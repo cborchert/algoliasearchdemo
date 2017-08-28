@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import algoliasearch from 'algoliasearch';
 import SearchBar from './components/SearchBar';
-import Results from './components/Results';
+import MovieGrid from './components/MovieGrid';
 import AddMovie from './components/AddMovie';
 import api from './API';
 import './styles/common.scss';
@@ -28,7 +28,7 @@ export default class App extends Component {
 
     }
 
-    runAlgoliaQuery(queryString){
+    runAlgoliaQuery(queryString) {
         //Need to clear the cache in order for deleted queries not to show up again
         console.log('clearing the search');
         this.client.clearCache();
@@ -39,14 +39,14 @@ export default class App extends Component {
                 return;
             }
             //Let's remove any hits that match our deleted indices (since we might be pulling up old data!)
-            let hits = content.hits.filter( hit => this.state.deletedIndices.indexOf(hit.objectID) == -1 );
+            let hits = content.hits.filter(hit => this.state.deletedIndices.indexOf(hit.objectID) == -1);
             console.log(hits)
             this.setState({searchResults: hits});
         }.bind(this));
     }
 
-    updateResults(popDeletedId){
-        if(popDeletedId){
+    updateResults(popDeletedId) {
+        if (popDeletedId) {
             let deletedIndices = this.state.deletedIndices;
             deletedIndicies = deletedIndicies.filter(id => id !== popDeletedId);
             this.setState({deletedIndices});
@@ -54,29 +54,29 @@ export default class App extends Component {
         this.runAlgoliaQuery(this.state.searchValue);
     }
 
-    handleSearchChange(event){
+    handleSearchChange(event) {
         let query = event.target.value;
 
-        this.setState({
-            searchValue: query
-        });
+        this.setState({searchValue: query});
 
         this.runAlgoliaQuery(query);
     }
 
-    addMovie(movieObject){
+    addMovie(movieObject) {
         api.addMovie(movieObject, this.updateResults.bind(this));
     }
 
     //TODO: In development, at least, the database gets locked when running several deletes consecutively, returning 500 errors
-    deleteMovie(id){
-        console.log('deleting '+id);
+    deleteMovie(id) {
+        console.log('deleting ' + id);
         //Remove the hit from the results preemptively (assume success)
         let results = this.state.searchResults.filter(result => result.objectID !== id),
             deletedIndices = this.state.deletedIndices;
         deletedIndices.push(id);
         this.setState({searchResults: results, deletedIndices});
-        api.deleteMovie(id, ()=>{this.updateResults.call(this, id)});
+        api.deleteMovie(id, () => {
+            this.updateResults.call(this, id)
+        });
     }
 
     componentDidMount() {
@@ -91,7 +91,7 @@ export default class App extends Component {
             <div className="app">
                 <SearchBar value={this.state.searchValue} onChange={this.handleSearchChange.bind(this)}/>
                 <AddMovie addMovie={this.addMovie.bind(this)}/>
-                <Results hits={this.state.searchResults} deleteMovie={this.deleteMovie.bind(this)}/>
+                <MovieGrid movies={this.state.searchResults} deleteMovie={this.deleteMovie.bind(this)}/>
             </div>
         );
     }

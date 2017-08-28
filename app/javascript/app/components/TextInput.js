@@ -2,44 +2,49 @@ import React, {Component} from 'react';
 import tinycolor from 'tinycolor2';
 import '../styles/TextInput.scss';
 
-export default class TextInput extends Component{
+export default class TextInput extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
-        let value = this.props.value ? this.props.value : '';
+        let value = this.props.value
+            ? this.props.value
+            : '';
         this.state = {
             value: value
         };
     }
 
-    handleChange(event){
+    handleChange(event) {
         this.setState({value: event.target.value});
-        if(this.props.onChange && this.props.keyName){
+        if (this.props.onChange && this.props.keyName) {
             this.props.onChange(this.props.keyName, event.target.value, this.props.keyIndex);
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.value && nextProps.value !== this.state.value){
-            this.setState({ value: nextProps.value});
+        if (nextProps.value && nextProps.value !== this.state.value) {
+            this.setState({value: nextProps.value});
         }
     }
 
-    render(){
+    render() {
         let styles = {},
             colorPreview = '';
-        if(this.props.features && this.props.features.indexOf('previewColor') >= 0){
+        if (this.props.features && this.props.features.indexOf('previewColor') >= 0) {
             styles.borderLeftColor = tinycolor(this.state.value).toHexString();
             styles.borderLeftStyle = "solid";
             styles.borderLeftWidth = "10px";
-            colorPreview = <div className="text-input__color-preview" style={{backgroundColor:tinycolor(this.state.value).toHexString()}}>color preview </div>;
+            colorPreview = <div className="text-input__color-preview" style={{
+                backgroundColor: tinycolor(this.state.value).toHexString()
+            }}>color preview
+            </div>;
         }
-        return(
+        return (
             <div>
                 <label>{this.props.label}</label>
                 <div>
                     {colorPreview}
-                    <input value={this.state.value} onChange={this.handleChange.bind(this)} />
+                    <input value={this.state.value} onChange={this.handleChange.bind(this)}/>
                 </div>
             </div>
         );

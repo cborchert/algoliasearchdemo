@@ -7,10 +7,12 @@ import '../styles/SearchBar.scss';
 //TODO: proptypes
 export default function SearchBar(props) {
 
-    let className = props.className ? 'search-bar ' + props.className : 'search-bar';
+    let className = props.className
+        ? 'search-bar ' + props.className
+        : 'search-bar';
     return (
         <div className="search-bar-container">
-            <input className={className} value={props.value} onChange={props.onChange} />
+            <input className={className} value={props.value} onChange={props.onChange}/>
         </div>
     );
 }

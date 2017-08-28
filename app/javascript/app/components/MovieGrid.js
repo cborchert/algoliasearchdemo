@@ -1,25 +1,25 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Result from './Result';
-import '../styles/Results.scss';
+import Movie from './Movie';
+import '../styles/MovieGrid.scss';
 
 //Since Algolia search is asynchronous
 //https://www.algolia.com/doc/api-reference/api-methods/search/
 //TODO: Styling
 //TODO: proptypes
-class Results extends Component {
+class MovieGrid extends Component {
 
-    shouldComponentUpdate(nextProps){
+    shouldComponentUpdate(nextProps) {
 
-        if(this.props.hits.length !== nextProps.hits.length){
+        if (this.props.movies.length !== nextProps.movies.length) {
             //If the hit lists are not the same length, we definitely need to update!
             console.log('Hit lists not the same length. Let\'s update.');
             return true;
         } else {
             //Check whether each of the hits is the same and in the same order!
             let shouldUpdate = false;
-            this.props.hits.forEach( function compareHits(hit, i){
-                if(hit.objectID !== nextProps.hits[i].objectID){
+            this.props.movies.forEach(function compareMovies(mobie, i) {
+                if (movie.objectID !== nextProps.movies[i].objectID) {
                     console.log('Hit lists not identical. Let\'s update.');
                     shouldUpdate = true;
                 }
@@ -30,15 +30,15 @@ class Results extends Component {
 
     render() {
         console.log("Results Rendering");
-        let hits = '';
-        if( this.props.hits ){
-            hits = this.props.hits.map( (hit, i) => {
-                return <Result key={hit.objectID} resultObject={hit} order={2*(i+1)} deleteMovie={this.props.deleteMovie}/>;
+        let movies = '';
+        if (this.props.movies) {
+            movies = this.props.movies.map((movie, i) => {
+                return <Movie key={movie.objectID} movieObject={movie} order={2 * (i + 1)} deleteMovie={this.props.deleteMovie}/>;
             });
         }
         return (
-            <div className="results">
-                {hits}
+            <div className="movie-grid">
+                {movies}
             </div>
         );
 
@@ -47,12 +47,12 @@ class Results extends Component {
 }
 
 //PropTypes
-Results.propTypes = {
-    hits: PropTypes.array
+MovieGrid.propTypes = {
+    movies: PropTypes.array
 };
 
-Results.defaultProps = {
-    hits: []
+MovieGrid.defaultProps = {
+    movies: []
 }
 
-export default Results;
+export default MovieGrid;
