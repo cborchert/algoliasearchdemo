@@ -11,6 +11,7 @@ export default class AddMovie extends Component {
         super();
         this.state = {
             title: '',
+            color: '',
             image: '',
             actors: [],
             actor_facets: [],
@@ -44,7 +45,6 @@ export default class AddMovie extends Component {
 
         this.state.actor_images.forEach((actorImage, i) => {
             actor_facets[i] = xss(actorImage) + '|';
-            actor
         });
         this.state.actors.forEach((actor, i) => {
             actor_facets[i] += xss(actor);
@@ -112,7 +112,7 @@ export default class AddMovie extends Component {
 
     getMovieErrors(movieObject) {
         let errors = [];
-        console.log('title', xss(movieObject.title).trim())
+        //console.log('title', xss(movieObject.title).trim())
         if (xss(movieObject.title).trim() === '') {
             errors.push("A title is required");
         }
@@ -128,16 +128,6 @@ export default class AddMovie extends Component {
         this.props.addMovie(movieObject);
     }
 
-    // actor_facets: ["https://image.tmdb.org/t/p/w45/ezPYICJlhdPrFPp7wBFChZ5CpEC.jpg|Kristen Holden-Ried"]
-    // actors: ["Kristen Holden-Ried"]
-    // alternative_titles:["Retornados"]
-    // color:"#592B2B"
-    // genre:["Horror", "Thriller", "Drama"]
-    // image:"https://image.tmdb.org/t/p/w154/xaebgpsOqxkfeKDaV4YMTbww5ss.jpg"
-    // rating:"3"
-    // score:"5.125581395348838"
-    // title:"The Returned"
-    // year:"2014"
     //TODO: Form validation
     //TODO: Submit form
     //TODO: Color input circle
@@ -172,24 +162,24 @@ export default class AddMovie extends Component {
             movieErrors = movieErrorsArray.length == 0
                 ? ''
                 : (
-                    <ul>
+                    <ul className="movie__errors">
                         {movieErrorsArray.map((error, i) => {
-                            return <li key={i}>{error}</li>
+                            return <li className="movie__error" key={i}>{error}</li>
                         })}
                     </ul>
-                );
-
-        console.log(movieErrorsArray);
-        console.log(movieErrors);
+                ),
+            submitButtonClasses = movieErrorsArray.length == 0
+                ? 'button'
+                : 'button button--disabled';
 
         if (this.state.genre.length > 0) {
             genresInputs = this.state.genre.map((genre, i) => {
                 return (
                     <div>
-                        <div onClick={() => {
+                        <div className="movie__remove-genre" onClick={() => {
                             this.removeGenre(i)
                         }}>remove</div>
-                        <TextInput key={'genres-input-' + i} label="genre" keyName="genre" keyIndex={i} onChange={this.handleChange.bind(this)} value={genre}/>
+                        <TextInput className="movie__genre-input" key={'genres-input-' + i} label="genre" keyName="genre" keyIndex={i} onChange={this.handleChange.bind(this)} value={genre}/>
                     </div>
                 );
             })
@@ -198,11 +188,11 @@ export default class AddMovie extends Component {
             actorsInputGroups = this.state.actors.map((actor, i) => {
                 return (
                     <div key={'actors-input-group-' + i}>
-                        <div onClick={() => {
+                        <div className="movie__remove-actor" onClick={() => {
                             this.removeActor(i)
                         }}>remove</div>
-                        <TextInput label="actor" keyName="actors" keyIndex={i} value={actor} onChange={this.handleChange.bind(this)}/>
-                        <TextInput label="actor image url" keyName="actor_images" keyIndex={i} value={this.state.actor_images[i]} onChange={this.handleChange.bind(this)}/>
+                        <TextInput className="movie__actor-input" label="actor" keyName="actors" keyIndex={i} value={actor} onChange={this.handleChange.bind(this)}/>
+                        <TextInput className="movie__actor-image-input" label="actor image url" keyName="actor_images" keyIndex={i} value={this.state.actor_images[i]} onChange={this.handleChange.bind(this)}/>
                     </div>
                 );
             })
@@ -211,34 +201,33 @@ export default class AddMovie extends Component {
             alternativeTitlesInputs = this.state.alternative_titles.map((alternativeTitle, i) => {
                 return (
                     <div>
-                        <div onClick={() => {
+                        <div className="movie__remove-alternative-title" onClick={() => {
                             this.removeAlternativeTitle(i)
                         }}>remove</div>
-                        <TextInput key={'alternative-title-input-' + i} label="alternative title" keyName="alternative_titles" keyIndex={i} onChange={this.handleChange.bind(this)} value={alternativeTitle}/>
+                        <TextInput className="movie__alternative-title-input" key={'alternative-title-input-' + i} label="alternative title" keyName="alternative_titles" keyIndex={i} onChange={this.handleChange.bind(this)} value={alternativeTitle}/>
                     </div>
                 );
             });
         }
         return (
             <div className="add-movie">
-                <TextInput label="title (required)" keyName="title" onChange={this.handleChange.bind(this)}/>
-                <TextInput label="image url" keyName="image" onChange={this.handleChange.bind(this)}/>
-                <TextInput label="color" keyName="color" onChange={this.handleChange.bind(this)} value={this.state.color} features={['previewColor']}/>
-                <GithubPicker triangle="hide" colors={colors} color={this.state.color} onChange={(color) => {
-                    console.log(color);
+                <TextInput className="movie__title-input" label="title (required)" keyName="title" onChange={this.handleChange.bind(this)}/>
+                <TextInput className="movie__image-input" label="image url" keyName="image" onChange={this.handleChange.bind(this)}/>
+                <TextInput className="movie__color-input" label="color" keyName="color" onChange={this.handleChange.bind(this)} value={this.state.color} features={['previewColor']}/>
+                <GithubPicker className="movie__color-picker" triangle="hide" colors={colors} color={this.state.color} onChange={(color) => {
                     this.handleChange('color', color.hex)
                 }}/>
                 <hr/> {actorsInputGroups}
-                <div onClick={this.addActor.bind(this)}>Add Actor</div>
+                <div className="movie__add-actor" onClick={this.addActor.bind(this)}>Add Actor</div>
                 {genresInputs}
-                <div onClick={this.addGenre.bind(this)}>Add Genre</div>
-                <TextInput label="rating" keyName="rating" onChange={this.handleChange.bind(this)}/>
-                <TextInput label="year" keyName="year" onChange={this.handleChange.bind(this)}/>
-                <TextInput label="score" keyName="score" onChange={this.handleChange.bind(this)}/> {alternativeTitlesInputs}
-                <div onClick={this.addAlternativeTitle.bind(this)}>Add Alternative Title</div>
+                <div className="movie__add-genre" onClick={this.addGenre.bind(this)}>Add Genre</div>
+                <TextInput className="movie__rating-input" label="rating" keyName="rating" onChange={this.handleChange.bind(this)}/>
+                <TextInput className="movie__year-input" label="year" keyName="year" onChange={this.handleChange.bind(this)}/>
+                <TextInput className="movie__score-input" label="score" keyName="score" onChange={this.handleChange.bind(this)}/> {alternativeTitlesInputs}
+                <div className="movie__add-alternative-title" onClick={this.addAlternativeTitle.bind(this)}>Add Alternative Title</div>
                 <h5>Preview</h5>
                 <Movie movieObject={moviePreviewObject}/> {movieErrors}
-                <button onClick={this.submitMovie.bind(this)} disabled={movieErrorsArray.length > 0}>
+                <button className={submitButtonClasses} onClick={this.submitMovie.bind(this)} disabled={movieErrorsArray.length > 0}>
                     Submit
                 </button>
             </div>

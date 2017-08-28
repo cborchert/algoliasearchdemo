@@ -29,7 +29,9 @@ export default class TextInput extends Component {
 
     render() {
         let styles = {},
-            colorPreview = '';
+            colorPreview = '',
+            classes = 'text-input';
+
         if (this.props.features && this.props.features.indexOf('previewColor') >= 0) {
             styles.borderLeftColor = tinycolor(this.state.value).toHexString();
             styles.borderLeftStyle = "solid";
@@ -39,8 +41,11 @@ export default class TextInput extends Component {
             }}>color preview
             </div>;
         }
+        if (this.props.className) {
+            classes += ` ${this.props.className}`;
+        }
         return (
-            <div>
+            <div className={classes}>
                 <label>{this.props.label}</label>
                 <div>
                     {colorPreview}
