@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {GithubPicker} from 'react-color';
 import xss from 'xss';
-import TextInput from './TextInput';
+import TextInput from './TextInput'
 import Movie from './Movie';
 import '../styles/NewMovieForm.scss';
 

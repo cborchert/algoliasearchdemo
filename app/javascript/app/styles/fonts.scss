@@ -16,3 +16,122 @@
     font-weight: normal;
     font-style: italic;
 }
+@font-face {
+    font-family: 'icomoon';
+    src: url('../fonts/Icomoon/icomoon.eot?bc8dpx');
+    src: url('../fonts/Icomoon/icomoon.eot?bc8dpx#iefix') format('embedded-opentype'), url('../fonts/Icomoon/icomoon.ttf?bc8dpx') format('truetype'), url('../fonts/Icomoon/icomoon.woff?bc8dpx') format('woff'), url('../fonts/Icomoon/icomoon.svg?bc8dpx#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class*=" icon-"],
+[class^="icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-drop:before {
+    content: '\e90b';
+}
+
+.icon-enlarge:before {
+    content: '\e98b';
+}
+
+.icon-shrink:before {
+    content: '\e98c';
+}
+
+.icon-delete:before {
+    content: '\e9ac';
+}
+
+.icon-star-empty:before {
+    content: '\e9d7';
+}
+
+.icon-star-half:before {
+    content: '\e9d8';
+}
+
+.icon-star-full:before {
+    content: '\e9d9';
+}
+
+.icon-emote-happy:before {
+    content: '\e9df';
+}
+
+.icon-emote-happy-full:before {
+    content: '\e9e0';
+}
+
+.icon-emote-smile:before {
+    content: '\e9e1';
+}
+
+.icon-emote-smile-full:before {
+    content: '\e9e2';
+}
+
+.icon-emote-sad:before {
+    content: '\e9e5';
+}
+
+.icon-emote-sad-full:before {
+    content: '\e9e6';
+}
+
+.icon-emote-grin:before {
+    content: '\e9e9';
+}
+
+.icon-emote-grin-full:before {
+    content: '\e9ea';
+}
+
+.icon-emote-neutral:before {
+    content: '\e9f7';
+}
+
+.icon-emote-neutral-full:before {
+    content: '\e9f8';
+}
+
+.icon-emote-hmm:before {
+    content: '\e9fb';
+}
+
+.icon-emote-hmm-full:before {
+    content: '\e9fc';
+}
+
+.icon-emote-crying:before {
+    content: '\ea01';
+}
+
+.icon-emote-crying-full:before {
+    content: '\ea02';
+}
+
+.icon-plus:before {
+    content: '\ea0a';
+}
+
+.icon-cancel-circle:before {
+    content: '\ea0d';
+}
+
+.icon-cancel:before {
+    content: '\ea0f';
+}

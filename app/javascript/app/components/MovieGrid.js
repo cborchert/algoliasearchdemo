@@ -29,7 +29,7 @@ class MovieGrid extends Component {
     }
 
     render() {
-        // console.log("Results Rendering");
+        console.log("Rendering movie grid");
         let movies = '';
         if (this.props.movies && this.props.movies.length > 0) {
             movies = this.props.movies.map((movie, i) => {

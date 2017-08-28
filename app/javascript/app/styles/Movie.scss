@@ -24,7 +24,7 @@
         background-size: cover;
         background-position: top center;
         filter: blur(2px);
-        opacity: 0.7;
+        opacity: 0.4;
         position: absolute;
         top: 0;
         left: 0;
@@ -39,7 +39,7 @@
         left: 0;
         bottom: 0;
         right: 0;
-        padding: 2rem;
+        padding: 2.7rem 2.5rem;
         overflow-y: scroll;
     }
 
@@ -64,6 +64,7 @@
         font-size: 1.8rem;
         font-weight: bold;
         text-transform: uppercase;
+        cursor: pointer;
     }
 
     &__actor {
@@ -74,20 +75,61 @@
         }
     }
 
-    &__actor,
-    &__alternative-title,
-    &__genre {
-        padding: 0.5rem;
-        font-size: 1.2rem;
+    &__detail__heading {
+        font-size: 1.6rem;
+        margin: 1rem 0 0.5rem;
+        padding: 0;
     }
 
-    &__actor,
-    &__genre {
-        display: inline-block;
-        text-align: left;
+    &__detail__text {
+        font-size: 1.2rem;
+        line-height: 1.5rem;
     }
 
     &__additional {
+        display: none;
+    }
+
+    &__year {
+        margin-top: 0.5rem;
+        font-size: 1.2rem;
+    }
+
+    &__rating {
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+        font-size: 1rem;
+
+        &-icon {
+            font-size: 2rem;
+            display: block;
+        }
+
+    }
+
+    &__delete,
+    &__expand {
+        position: absolute;
+        opacity: 0.7;
+        cursor: pointer;
+        font-size: 1.4rem;
+        transition: 200ms;
+
+        &:active,
+        &:focus,
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    &__expand {
+        top: 1rem;
+        right: 0.8rem;
+    }
+
+    &__delete {
+        bottom: 1rem;
+        right: 0.8rem;
         display: none;
     }
 
@@ -98,7 +140,8 @@
             filter: blur(7px);
         }
 
-        .movie__additional {
+        .movie__additional,
+        .movie__delete {
             display: block;
         }
 

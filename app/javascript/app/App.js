@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import algoliasearch from 'algoliasearch';
+import _ from 'lodash';
 import SearchBar from './components/SearchBar';
 import MovieGrid from './components/MovieGrid';
 import NewMovieForm from './components/NewMovieForm';
@@ -26,6 +27,8 @@ export default class App extends Component {
         //We are making the client available in order to be able to clear the cache
         this.client = algoliasearch('H6LCFN7QUX', 'fd23d200ccc13ded45de9820fce938de');
         this.index = this.client.initIndex('technical_test_movies');
+        // this.debouncedQuery = _.debounce(this.runAlgoliaQuery.bind(this), 300, {'leading': true});
+        this.debouncedQuery = this.runAlgoliaQuery.bind(this);
 
     }
 
@@ -56,7 +59,8 @@ export default class App extends Component {
         //     deletedIndicies = deletedIndicies.filter(id => id !== popDeletedId);
         //     this.setState({deletedIndices});
         // }
-        this.runAlgoliaQuery(this.state.searchValue);
+        // this.runAlgoliaQuery(this.state.searchValue);
+        this.debouncedQuery(this.state.searchValue);
     }
 
     handleSearchChange(event) {
@@ -64,7 +68,8 @@ export default class App extends Component {
 
         this.setState({searchValue: query});
 
-        this.runAlgoliaQuery(query);
+        // this.runAlgoliaQuery(query);
+        this.debouncedQuery(query);
     }
 
     addMovie(movieObject) {
@@ -92,7 +97,8 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        this.runAlgoliaQuery(this.state.searchValue);
+        // this.runAlgoliaQuery(this.state.searchValue);
+        this.debouncedQuery(this.state.searchValue);
     }
 
     //TODO: shouldComponentUpdate to determine if we need to update the app -- or simply pass it into the query container
