@@ -146,15 +146,30 @@ describe('<NewMovieForm />', () => {
         expect(wrapper.find('.new-movie-form__error')).to.have.length('0');
     });
     it('has an advanced field panel', () => {
-        expect(false).to.eql(true);
+        expect(wrapper.find('.new-movie-form__advanced')).to.have.length('1');
     });
     it('responds to expand advanced fields', () => {
-        expect(false).to.eql(true);
+        expect(wrapper.find('.new-movie-form__open-advanced')).to.have.length('1');
+        expect(wrapper.find('.new-movie-form__advanced').is('.new-movie-form__advanced--open')).to.equal(false);
+        wrapper.find('.new-movie-form__open-advanced').simulate('click');
+        wrapper.update();
+        expect(wrapper.find('.new-movie-form__advanced').is('.new-movie-form__advanced--open')).to.equal(true);
+        wrapper.find('.new-movie-form__open-advanced').simulate('click');
+        wrapper.update();
+        expect(wrapper.find('.new-movie-form__advanced').is('.new-movie-form__advanced--open')).to.equal(false);
     });
     it('responds to close button', () => {
-        expect(false).to.eql(true);
+        wrapper.setState({isOpen: true});
+        wrapper.update();
+        expect(wrapper.find('.new-movie-form__close')).to.have.length('1');
+        expect(wrapper.is('.new-movie-form--open')).to.equal(true);
+        wrapper.find('.new-movie-form__close').simulate('click');
+        expect(wrapper.is('.new-movie-form--open')).to.equal(false);
     });
     it('renders a movie preview', () => {
+        expect(false).to.eql(true);
+    });
+    it('passes correct props to movie preview', () => {
         expect(false).to.eql(true);
     });
 });
