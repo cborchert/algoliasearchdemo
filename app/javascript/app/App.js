@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import algoliasearch from 'algoliasearch';
 import SearchBar from './components/SearchBar';
 import MovieGrid from './components/MovieGrid';
-import AddMovie from './components/AddMovie';
+import NewMovieForm from './components/NewMovieForm';
 import api from './API';
 import './styles/common.scss';
 import './styles/App.scss';

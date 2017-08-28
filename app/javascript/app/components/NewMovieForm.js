@@ -3,9 +3,9 @@ import {GithubPicker} from 'react-color';
 import xss from 'xss';
 import TextInput from './TextInput';
 import Movie from './Movie';
-import '../styles/AddMovie.scss';
+import '../styles/NewMovieForm.scss';
 
-export default class AddMovie extends Component {
+export default class NewMovieForm extends Component {
 
     constructor() {
         super();
@@ -162,9 +162,9 @@ export default class AddMovie extends Component {
             movieErrors = movieErrorsArray.length == 0
                 ? ''
                 : (
-                    <ul className="movie__errors">
+                    <ul className="new-movie-form__errors">
                         {movieErrorsArray.map((error, i) => {
-                            return <li className="movie__error" key={i}>{error}</li>
+                            return <li className="new-movie-form__error" key={i}>{error}</li>
                         })}
                     </ul>
                 ),
@@ -176,10 +176,10 @@ export default class AddMovie extends Component {
             genresInputs = this.state.genre.map((genre, i) => {
                 return (
                     <div>
-                        <div className="movie__remove-genre" onClick={() => {
+                        <div className="new-movie-form__remove-genre" onClick={() => {
                             this.removeGenre(i)
                         }}>remove</div>
-                        <TextInput className="movie__genre-input" key={'genres-input-' + i} label="genre" keyName="genre" keyIndex={i} onChange={this.handleChange.bind(this)} value={genre}/>
+                        <TextInput className="new-movie-form__genre-input" key={'genres-input-' + i} label="genre" keyName="genre" keyIndex={i} onChange={this.handleChange.bind(this)} value={genre}/>
                     </div>
                 );
             })
@@ -188,11 +188,11 @@ export default class AddMovie extends Component {
             actorsInputGroups = this.state.actors.map((actor, i) => {
                 return (
                     <div key={'actors-input-group-' + i}>
-                        <div className="movie__remove-actor" onClick={() => {
+                        <div className="new-movie-form__remove-actor" onClick={() => {
                             this.removeActor(i)
                         }}>remove</div>
-                        <TextInput className="movie__actor-input" label="actor" keyName="actors" keyIndex={i} value={actor} onChange={this.handleChange.bind(this)}/>
-                        <TextInput className="movie__actor-image-input" label="actor image url" keyName="actor_images" keyIndex={i} value={this.state.actor_images[i]} onChange={this.handleChange.bind(this)}/>
+                        <TextInput className="new-movie-form__actor-input" label="actor" keyName="actors" keyIndex={i} value={actor} onChange={this.handleChange.bind(this)}/>
+                        <TextInput className="new-movie-form__actor-image-input" label="actor image url" keyName="actor_images" keyIndex={i} value={this.state.actor_images[i]} onChange={this.handleChange.bind(this)}/>
                     </div>
                 );
             })
@@ -201,32 +201,35 @@ export default class AddMovie extends Component {
             alternativeTitlesInputs = this.state.alternative_titles.map((alternativeTitle, i) => {
                 return (
                     <div>
-                        <div className="movie__remove-alternative-title" onClick={() => {
+                        <div className="new-movie-form__remove-alternative-title" onClick={() => {
                             this.removeAlternativeTitle(i)
                         }}>remove</div>
-                        <TextInput className="movie__alternative-title-input" key={'alternative-title-input-' + i} label="alternative title" keyName="alternative_titles" keyIndex={i} onChange={this.handleChange.bind(this)} value={alternativeTitle}/>
+                        <TextInput className="new-movie-form__alternative-title-input" key={'alternative-title-input-' + i} label="alternative title" keyName="alternative_titles" keyIndex={i} onChange={this.handleChange.bind(this)} value={alternativeTitle}/>
                     </div>
                 );
             });
         }
         return (
-            <div className="add-movie">
-                <TextInput className="movie__title-input" label="title (required)" keyName="title" onChange={this.handleChange.bind(this)}/>
-                <TextInput className="movie__image-input" label="image url" keyName="image" onChange={this.handleChange.bind(this)}/>
-                <TextInput className="movie__color-input" label="color" keyName="color" onChange={this.handleChange.bind(this)} value={this.state.color} features={['previewColor']}/>
-                <GithubPicker className="movie__color-picker" triangle="hide" colors={colors} color={this.state.color} onChange={(color) => {
+            <div className="new-movie-form">
+                <TextInput className="new-movie-form__title-input" label="title (required)" keyName="title" onChange={this.handleChange.bind(this)}/>
+                <TextInput className="new-movie-form__image-input" label="image url" keyName="image" onChange={this.handleChange.bind(this)}/>
+                <TextInput className="new-movie-form__color-input" label="color" keyName="color" onChange={this.handleChange.bind(this)} value={this.state.color} features={['previewColor']}/>
+                <GithubPicker className="new-movie-form__color-picker" triangle="hide" colors={colors} color={this.state.color} onChange={(color) => {
                     this.handleChange('color', color.hex)
                 }}/>
-                <hr/> {actorsInputGroups}
-                <div className="movie__add-actor" onClick={this.addActor.bind(this)}>Add Actor</div>
-                {genresInputs}
-                <div className="movie__add-genre" onClick={this.addGenre.bind(this)}>Add Genre</div>
-                <TextInput className="movie__rating-input" label="rating" keyName="rating" onChange={this.handleChange.bind(this)}/>
-                <TextInput className="movie__year-input" label="year" keyName="year" onChange={this.handleChange.bind(this)}/>
-                <TextInput className="movie__score-input" label="score" keyName="score" onChange={this.handleChange.bind(this)}/> {alternativeTitlesInputs}
-                <div className="movie__add-alternative-title" onClick={this.addAlternativeTitle.bind(this)}>Add Alternative Title</div>
-                <h5>Preview</h5>
-                <Movie movieObject={moviePreviewObject}/> {movieErrors}
+                <div className="movie">
+                    {actorsInputGroups}
+                    <div className="new-movie-form__add-actor" onClick={this.addActor.bind(this)}>Add Actor</div>
+                    {genresInputs}
+                    <div className="new-movie-form__add-genre" onClick={this.addGenre.bind(this)}>Add Genre</div>
+                    <TextInput className="new-movie-form__rating-input" label="rating" keyName="rating" onChange={this.handleChange.bind(this)}/>
+                    <TextInput className="new-movie-form__year-input" label="year" keyName="year" onChange={this.handleChange.bind(this)}/>
+                    <TextInput className="new-movie-form__score-input" label="score" keyName="score" onChange={this.handleChange.bind(this)}/> {alternativeTitlesInputs}
+                    <div className="new-movie-form__add-alternative-title" onClick={this.addAlternativeTitle.bind(this)}>Add Alternative Title</div>
+                    <h5>Preview</h5>
+                    <Movie movieObject={moviePreviewObject}></Movie>
+                    {movieErrors}
+                </div>
                 <button className={submitButtonClasses} onClick={this.submitMovie.bind(this)} disabled={movieErrorsArray.length > 0}>
                     Submit
                 </button>
