@@ -1,15 +1,42 @@
+@import './vars';
+
 .app {
+    .add-movie-button {
+        padding: 0.9rem 1rem;
+        text-transform: uppercase;
+        width: 155px;
+        text-align: center;
+        box-sizing: border-box;
+        vertical-align: bottom;
+        @media screen and (max-width: 500px) {
+            width: 50px;
+        }
+    }
+
+    &__header {
+        padding: 2rem;
+        text-align: center;
+        font-size: 0;
+        box-shadow: $boxShadow;
+        background-color: $white;
+    }
+
     &__inner {
         transition: 200ms;
         box-sizing: border-box;
+        text-align: center;
+        padding: 5rem 0;
     }
 
     &--locked {
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+
+        .app__header,
         .app__inner {
             filter: blur(2px);
             opacity: 0.5;
-            height: 100vh;
-            width: 100vw;
             overflow: hidden;
             pointer-events: none;
         }

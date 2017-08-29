@@ -1,1 +1,24 @@
-.search-bar {}
+@import './vars';
+
+.search-bar-container {
+    width: 500px;
+    max-width: calc(100% - 155px);
+    display: inline-block;
+    vertical-align: bottom;
+    @media screen and (max-width: 500px) {
+        max-width: calc(100% - 50px);
+    }
+}
+
+.search-bar {
+    display: inline-block;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 0;
+    font-size: 2rem;
+    padding: 1rem 1rem 0.5rem;
+    border-bottom-width: 3px !important;
+    letter-spacing: 1px;
+    line-height: 2rem;
+    box-sizing: border-box;
+}

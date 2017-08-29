@@ -21,7 +21,7 @@
     }
 
     &__inner {
-        height: 550px;
+        height: 600px;
         max-height: calc(100vh - 4rem);
         padding: 2rem 2rem 8rem;
         box-sizing: border-box;
@@ -110,6 +110,15 @@
             top: auto;
             right: auto;
             margin: 1rem 0;
+        }
+
+        .movie {
+            @media screen and (max-width: 600px) {
+                width: calc(100% - 2rem);
+            }
+            @media screen and (max-width: 400px) {
+                width: calc(100% - 2rem);
+            }
         }
     }
 

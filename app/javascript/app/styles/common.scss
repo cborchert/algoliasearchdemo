@@ -147,6 +147,9 @@ table {
 html {
     font-family: $fontSans;
     font-size: 10px;
+    @media screen and (max-width: 500px) {
+        font-size: 8px;
+    }
 }
 
 body {
@@ -154,6 +157,7 @@ body {
     letter-spacing: 0.1rem;
     font-weight: normal;
     color: $black;
+    background-color: darken($white, 2%);
 }
 
 h1,
@@ -236,5 +240,11 @@ label {
         font-size: 1.8rem;
         line-height: 2rem;
         padding: 0.8rem 3.5rem;
+    }
+}
+
+.desktop-only {
+    @media screen and (max-width: 500px) {
+        display: none;
     }
 }

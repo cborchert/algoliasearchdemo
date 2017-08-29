@@ -113,11 +113,14 @@ export default class App extends Component {
         //<Results index={this.index} query={this.state.searchValue} />
         return (
             <div className={appClasses}>
-                <div className="app__inner">
-                    <button className="button" onClick={this.openForm.bind(this)} title="Add new movie" aria-label="Add new movie">
-                        New Movie
-                    </button>
+                <div className="app__header">
                     <SearchBar value={this.state.searchValue} onChange={this.handleSearchChange.bind(this)}/>
+                    <button className="button add-movie-button" onClick={this.openForm.bind(this)} title="Add new movie" aria-label="Add new movie">
+                        Add
+                        <span className="desktop-only">{' Movie'}</span>
+                    </button>
+                </div>
+                <div className="app__inner">
                     <MovieGrid movies={this.state.searchResults} deleteMovie={this.deleteMovie.bind(this)}/>
                 </div>
                 <NewMovieForm isOpen={this.state.formOpen} addMovie={this.addMovie.bind(this)} closeForm={this.closeForm.bind(this)}/>
