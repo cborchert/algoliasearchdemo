@@ -234,7 +234,7 @@ class NewMovieForm extends Component {
 
                     <div className="new-movie-form__movie-preview">
                         <h5>Preview</h5>
-                        <Movie className="new-movie-form__movie" movieObject={moviePreviewObject}></Movie>
+                        <Movie className="new-movie-form__movie" movieObject={moviePreviewObject} disableDelete={true}/>
                     </div>
 
                     <TextInput className="new-movie-form__title-input" label="title (required)" keyName="title" onChange={this.handleChange.bind(this)} value={this.state.title}/>

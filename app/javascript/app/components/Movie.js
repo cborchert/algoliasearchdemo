@@ -112,9 +112,11 @@ class Movie extends Component {
                     </div>
                 )
                 : '';
-            deleteMovie = (
-                <div className="movie__delete movie__additional" onClick={this.toggleDeleteMenu.bind(this)}><span className="movie__delete-icon icon-delete"/></div>
-            );
+            deleteMovie = this.props.disableDelete
+                ? ''
+                : (
+                    <div className="movie__delete movie__additional" onClick={this.toggleDeleteMenu.bind(this)}><span className="movie__delete-icon icon-delete"/></div>
+                );
         }
         if (this.state.deleteMenuOpen) {
             classes += ' movie__delete-menu-open';
