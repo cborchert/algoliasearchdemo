@@ -126,7 +126,7 @@ TextInput.propTypes = {
 
 TextInput.defaultProps = {
     label: '',
-    features: '',
+    features: [],
     type: 'text',
     step: '',
     min: '',
