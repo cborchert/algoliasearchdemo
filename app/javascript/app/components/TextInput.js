@@ -40,7 +40,7 @@ class TextInput extends Component {
     }
 
     render() {
-        console.log('rendering text');
+        // console.log('rendering text');
         let styles = {},
             colors = [
                 "#e74c3c",

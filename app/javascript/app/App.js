@@ -46,13 +46,13 @@ export default class App extends Component {
             }
             //Let's remove any hits that match our deleted indices (since we might be pulling up old data!)
             let hits = content.hits.filter(hit => this.state.deletedIndices.indexOf(hit.objectID) == -1);
-            console.log(hits)
+            // console.log(hits)
             this.setState({searchResults: hits});
         }.bind(this));
     }
 
     clearCache(popDeletedId) {
-        console.log('updating results');
+        // console.log('updating results');
         this.client.clearCache();
         this.index.clearCache();
         //This requires between 1000 and 3000 ms to be searchable -- how do we deal with this without interfering?
@@ -106,7 +106,7 @@ export default class App extends Component {
 
     //TODO: shouldComponentUpdate to determine if we need to update the app -- or simply pass it into the query container
     render() {
-        console.log('rendering app');
+        // console.log('rendering app');
         let appClasses = this.state.formOpen
             ? 'app app--locked'
             : 'app';

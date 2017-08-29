@@ -173,7 +173,7 @@ class NewMovieForm extends Component {
     //TODO: Form validation
     //TODO: Submit form
     render() {
-        console.log('rendering movie form');
+        // console.log('rendering movie form');
         let formClasses = this.props.isOpen
                 ? 'new-movie-form new-movie-form--open'
                 : 'new-movie-form',

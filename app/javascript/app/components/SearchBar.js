@@ -16,7 +16,7 @@ export default class SearchBar extends Component {
     }
 
     render() {
-        console.log('rendering search');
+        // console.log('rendering search');
         let className = this.props.className
             ? 'search-bar ' + this.props.className
             : 'search-bar';
