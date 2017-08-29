@@ -128,7 +128,7 @@ class NewMovieForm extends Component {
         //If all is not well, show form errors
         //If all is well
         this.props.addMovie(movieObject);
-        this.props.closeForm();
+        this.closeForm();
     }
 
     toggleAdvanced() {
@@ -139,7 +139,7 @@ class NewMovieForm extends Component {
 
     closeForm() {
         //reset form in addition to closing!
-        this.state = {
+        this.setState({
             title: '',
             color: '#2c3e50',
             image: '',
@@ -152,12 +152,22 @@ class NewMovieForm extends Component {
             score: '',
             year: '',
             advancedOpen: false
-        }
-        this.props.closeForm();
+        }, this.props.closeForm);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return this.props.isOpen || nextProps.isOpen;
+        if (this.props.isOpen || nextProps.isOpen) {
+            return true;
+        } else {
+            let shouldUpdate = false;
+            for (let key in nextState) {
+                if (nextState[key] !== this.state[key]) {
+                    shouldUpdate = true;
+                    break;
+                }
+            }
+            return shouldUpdate;
+        }
     }
 
     //TODO: Form validation
