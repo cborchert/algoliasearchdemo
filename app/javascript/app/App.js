@@ -37,8 +37,8 @@ export default class App extends Component {
     runAlgoliaQuery(queryString) {
         //Need to clear the cache in order for deleted queries not to show up again
         // console.log('clearing the search');
-        // this.client.clearCache();
-        // this.index.clearCache();
+        this.client.clearCache();
+        this.index.clearCache();
         console.log('running algolia search');
         this.index.search(queryString, function searchDone(err, content) {
             if (err) {

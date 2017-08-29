@@ -8,6 +8,7 @@ class API {
         if (movieObject.alwaysUpdate) {
             delete movieObject.alwaysUpdate;
         }
+        movieObject.objectID = '';
         const ENDPOINT = '/api/1/movies';
         axios.post(ENDPOINT, {movie: movieObject}).then(function(data) {
             console.log(data);
