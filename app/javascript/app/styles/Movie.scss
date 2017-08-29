@@ -9,6 +9,7 @@
     font-size: 1.6rem;
     // width: 25%;
     width: calc(300px);
+    max-width: calc( 100% - 2rem);
     height: calc(400px);
     vertical-align: middle;
     margin: 0.5rem;
@@ -23,7 +24,7 @@
     &__background {
         background-size: cover;
         background-position: top center;
-        filter: blur(2px);
+        filter: blur(0px);
         opacity: 0.4;
         position: absolute;
         top: 0;
