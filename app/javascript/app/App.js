@@ -19,24 +19,22 @@ export default class App extends Component {
             searchValue: '',
             searchResults: [],
             deletedIndices: [],
-            formOpen: false,
-            log: [],
-            logId: 0
+            formOpen: false
         };
 
         //https://github.com/algolia/algoliasearch-client-javascript#nodejs--react-native--browserify--webpack
         //https://www.algolia.com/doc/api-client/javascript/getting-started/
         //We are making the client available in order to be able to clear the cache
+        // this.client = algoliasearch('H6LCFN7QUX', 'fd23d200ccc13ded45de9820fce938de', {_useCache: false});
         this.client = algoliasearch('H6LCFN7QUX', 'fd23d200ccc13ded45de9820fce938de');
         this.index = this.client.initIndex('technical_test_movies');
-        // this.debouncedQuery = _.debounce(this.runAlgoliaQuery.bind(this), 300, {'leading': true});
-        this.debouncedQuery = this.runAlgoliaQuery.bind(this);
+        this.debouncedQuery = _.debounce(this.runAlgoliaQuery.bind(this), 50, {'leading': true});
+        // this.debouncedQuery = this.runAlgoliaQuery.bind(this);
 
     }
 
     runAlgoliaQuery(queryString) {
         //Need to clear the cache in order for deleted queries not to show up again, and for new queries to show up
-        this.index.clearCache();
         this.index.search({
             query: queryString,
             hitsPerPage: 24,
@@ -48,22 +46,16 @@ export default class App extends Component {
             }
             //Let's remove any hits that match our deleted indices (since we might be pulling up old data!)
             let hits = content.hits.filter(hit => this.state.deletedIndices.indexOf(hit.objectID) == -1);
-            // console.log(hits)
+            console.log(hits)
             this.setState({searchResults: hits});
         }.bind(this));
     }
 
-    updateResults(popDeletedId) {
-        console.log('updating results')
-        // this.client.clearCache();
-        // this.index.clearCache();
-        // if (popDeletedId) {
-        //     let deletedIndices = this.state.deletedIndices;
-        //     deletedIndicies = deletedIndicies.filter(id => id !== popDeletedId);
-        //     this.setState({deletedIndices});
-        // }
-        // this.runAlgoliaQuery(this.state.searchValue);
-        this.debouncedQuery(this.state.searchValue);
+    clearCache(popDeletedId) {
+        console.log('updating results');
+        this.client.clearCache();
+        this.index.clearCache();
+        //This requires between 1000 and 3000 ms to be searchable -- how do we deal with this without interfering?
     }
 
     handleSearchChange(event) {
@@ -74,37 +66,9 @@ export default class App extends Component {
         // this.runAlgoliaQuery(query);
         this.debouncedQuery(query);
     }
-
-    addLogEntry(message, type) {
-        let log = this.state.log,
-            id = this.getNextLogId();
-        log.push({id, message, type});
-        this.setState({
-            log
-        }, () => {
-            setTimeout(() => {
-                this.removeLogEntry(id)
-            }, 1000)
-        });
-    }
-
-    getNextLogId() {
-        let logId = this.state.logId + 1;
-        this.setState({logId});
-        return logId;
-    }
-
-    removeLogEntry(entryId) {
-        let log = this.state.log;
-        log = log.filter(message => message.id !== entryId);
-        this.setState({log});
-    }
-
     addMovie(movieObject) {
-        //this.addLogEntry('Movie will be added', 'adding');
         api.addMovie(movieObject, () => {
-            this.addLogEntry('Movie added', 'added');
-            this.updateResults();
+            this.clearCache();
         });
     }
 
@@ -123,30 +87,29 @@ export default class App extends Component {
             deletedIndices = this.state.deletedIndices;
         deletedIndices.push(id);
         this.setState({searchResults: results, deletedIndices});
-        this.addLogEntry('Movie will be deleted', 'deleting');
         api.deleteMovie(id, () => {
-            this.addLogEntry('Movie deleted', 'deleted');
-            this.updateResults.call(this, id)
+            this.clearCache.call(this, id)
         });
     }
 
     componentDidMount() {
         // this.runAlgoliaQuery(this.state.searchValue);
         this.debouncedQuery(this.state.searchValue);
+        //Consider polling with a cleared cache every 1.5 seconds in order to guarantee that added and deleted movies are shown correctly...
+        //either here or in this.clearCache() which is called after add/remove actions
+        // setTimeout(() => {
+        //     this.client.clearCache();
+        //     this.index.clearCache();
+        //     this.debouncedQuery(this.state.searchValue);
+        // }, 500);
     }
 
     //TODO: shouldComponentUpdate to determine if we need to update the app -- or simply pass it into the query container
     render() {
         console.log('rendering app');
-        console.log(this.state.log);
         let appClasses = this.state.formOpen
-                ? 'app app--locked'
-                : 'app',
-            log = (
-                <ul className="app__log">
-                    {this.state.log.map(entry => <li key={'app-log-' + entry.id} className={'app__log-entry app__log-entry' + entry.type}>{entry.message}</li>)}
-                </ul>
-            );
+            ? 'app app--locked'
+            : 'app';
         //<Results index={this.index} query={this.state.searchValue} />
         return (
             <div className={appClasses}>
@@ -154,7 +117,7 @@ export default class App extends Component {
                     <button className="button" onClick={this.openForm.bind(this)} title="Add new movie" aria-label="Add new movie">
                         New Movie
                     </button>
-                    <SearchBar value={this.state.searchValue} onChange={this.handleSearchChange.bind(this)}/> {log}
+                    <SearchBar value={this.state.searchValue} onChange={this.handleSearchChange.bind(this)}/>
                     <MovieGrid movies={this.state.searchResults} deleteMovie={this.deleteMovie.bind(this)}/>
                 </div>
                 <NewMovieForm isOpen={this.state.formOpen} addMovie={this.addMovie.bind(this)} closeForm={this.closeForm.bind(this)}/>
