@@ -114,6 +114,7 @@ export default class App extends Component {
         return (
             <div className={appClasses}>
                 <div className="app__header">
+                    <h1>cinesearch</h1>
                     <SearchBar value={this.state.searchValue} onChange={this.handleSearchChange.bind(this)}/>
                     <button className="button add-movie-button" onClick={this.openForm.bind(this)} title="Add new movie" aria-label="Add new movie">
                         Add
