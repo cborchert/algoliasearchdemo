@@ -104,13 +104,18 @@ export default class App extends Component {
     //TODO: shouldComponentUpdate to determine if we need to update the app -- or simply pass it into the query container
     render() {
         console.log('rendering app');
+        let appClasses = this.state.formOpen
+            ? 'app app--locked'
+            : 'app';
         //<Results index={this.index} query={this.state.searchValue} />
         return (
-            <div className="app">
-                <button className="button" onClick={this.openForm.bind(this)}>New Movie</button>
-                <SearchBar value={this.state.searchValue} onChange={this.handleSearchChange.bind(this)}/>
+            <div className={appClasses}>
+                <div className="app__inner">
+                    <button className="button" onClick={this.openForm.bind(this)}>New Movie</button>
+                    <SearchBar value={this.state.searchValue} onChange={this.handleSearchChange.bind(this)}/>
+                    <MovieGrid movies={this.state.searchResults} deleteMovie={this.deleteMovie.bind(this)}/>
+                </div>
                 <NewMovieForm isOpen={this.state.formOpen} addMovie={this.addMovie.bind(this)} closeForm={this.closeForm.bind(this)}/>
-                <MovieGrid movies={this.state.searchResults} deleteMovie={this.deleteMovie.bind(this)}/>
             </div>
         );
     }

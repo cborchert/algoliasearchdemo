@@ -1,1 +1,17 @@
-.app {}
+.app {
+    &__inner {
+        transition: 200ms;
+        box-sizing: border-box;
+    }
+
+    &--locked {
+        .app__inner {
+            filter: blur(2px);
+            opacity: 0.5;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            pointer-events: none;
+        }
+    }
+}
