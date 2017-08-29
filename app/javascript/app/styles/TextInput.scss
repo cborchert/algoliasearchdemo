@@ -1,0 +1,21 @@
+@import './vars';
+
+.text-input {
+    &__color-preview {
+        display: inline-block;
+        font-size: 1rem;
+        cursor: pointer;
+
+        &-icon {
+            font-size: 1.2rem;
+        }
+    }
+
+    &__color-picker {
+        display: none;
+
+        &--open {
+            display: block;
+        }
+    }
+}

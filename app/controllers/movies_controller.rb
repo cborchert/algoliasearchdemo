@@ -6,6 +6,7 @@ class MoviesController < ApplicationController
 
     def create
         Movie.without_auto_index do
+            puts movie_params;
             @movie = Movie.create(movie_params);
             # set new movie objectID based on its id
             # this is necessary for the

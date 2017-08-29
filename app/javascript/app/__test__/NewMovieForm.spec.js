@@ -5,7 +5,7 @@ import Movie from '../components/Movie';
 
 //These tests are a bit too exhaustive -- the add/remove should be sufficient on the multi-tests
 describe('<NewMovieForm />', () => {
-    const wrapper = shallow(<NewMovieForm/>);
+    const wrapper = shallow(<NewMovieForm isOpen={true}/>);
 
     it('should be a div', () => {
         expect(wrapper.type()).to.eql('div');
@@ -18,15 +18,6 @@ describe('<NewMovieForm />', () => {
     });
     it('renders color input', () => {
         expect(wrapper.find('TextInput').filter('.new-movie-form__color-input')).to.have.length('1');
-    });
-    it('renders color picker', () => {
-        expect(wrapper.find('.new-movie-form__color-picker')).to.have.length('1');
-    });
-    it('renders color picker and color input with same values', () => {
-        wrapper.setState({color: '#ff0000'});
-        wrapper.update();
-        expect(wrapper.find('TextInput').filter('.new-movie-form__color-input').prop('value')).to.equal('#ff0000');
-        expect(wrapper.find('.new-movie-form__color-picker').prop('color')).to.equal('#ff0000');
     });
     it('renders actor and actor image inputs based on state', () => {
         expect(wrapper.find('TextInput').filter('.new-movie-form__actor-input')).to.have.length('0');
@@ -185,7 +176,6 @@ describe('<NewMovieForm />', () => {
         });
         wrapper.update();
         let theProps = wrapper.find(Movie).first().props().movieObject;
-        console.log(theProps);
         expect(theProps.title).to.equal('Hello World');
         expect(theProps.color).to.equal('red');
         expect(theProps.image).to.equal('http://i695.photobucket.com/albums/vv311/salem_apocalypse/takethis-1.jpg');

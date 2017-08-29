@@ -7,6 +7,10 @@ import '../styles/SearchBar.scss';
 //TODO: proptypes
 export default class SearchBar extends Component {
 
+    constructor(props) {
+        super(props);
+    }
+
     shouldComponentUpdate(nextProps) {
         return this.props.className !== nextProps.className || this.props.value !== nextProps.value;
     }
@@ -18,7 +22,7 @@ export default class SearchBar extends Component {
             : 'search-bar';
         return (
             <div className="search-bar-container">
-                <input className={className} value={this.props.value} onChange={this.props.onChange}/>
+                <input className={className} value={this.props.value} onChange={this.props.onChange} placeholder="Search for a movie"/>
             </div>
         );
     }

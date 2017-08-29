@@ -5,6 +5,9 @@ class API {
 
     addMovie(movieObject, callback) {
         //TODO: Validate the movie object
+        if (movieObject.alwaysUpdate) {
+            delete movieObject.alwaysUpdate;
+        }
         const ENDPOINT = '/api/1/movies';
         axios.post(ENDPOINT, {movie: movieObject}).then(function(data) {
             console.log(data);

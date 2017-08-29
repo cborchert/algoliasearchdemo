@@ -53,7 +53,7 @@
     &__image {
         height: 0;
         max-height: 230px;
-        width: auto;
+        max-width: 140px;
         opacity: 0;
         display: block;
         float: left;
@@ -179,7 +179,7 @@
         }
 
         .movie__image {
-            height: 230px;
+            height: auto;
             filter: blur(0px);
             opacity: 1;
             margin: 0 10px 5px 0;

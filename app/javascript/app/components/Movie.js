@@ -31,7 +31,11 @@ class Movie extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return (this.props.movieObject.objectID !== nextProps.movieObject.objectID || this.state.expanded !== nextState.expanded || this.state.deleteMenuOpen !== nextState.deleteMenuOpen || this.props.movieObject.alwaysUpdate || nextProps.movieObject.alwaysUpdate);
+        if (this.props.movieObject.objectID !== nextProps.movieObject.objectID || this.state.expanded !== nextState.expanded || this.state.deleteMenuOpen !== nextState.deleteMenuOpen || this.props.movieObject.alwaysUpdate === true || nextProps.movieObject.alwaysUpdate === true) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     render() {
@@ -166,7 +170,8 @@ Movie.propTypes = {
         alternative_titles: PropTypes.array,
         actors: PropTypes.array,
         actor_facets: PropTypes.array,
-        alwaysUpdate: PropTypes.bool
+        alwaysUpdate: PropTypes.bool,
+        objectID: PropTypes.string
     })
 };
 
@@ -182,7 +187,8 @@ Movie.defaultProps = {
         alternative_titles: [],
         actors: [],
         actor_facets: [],
-        alwaysUpdate: false
+        alwaysUpdate: false,
+        objectID: 'uninstantiated'
     }
 }
 
