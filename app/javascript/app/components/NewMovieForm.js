@@ -128,6 +128,7 @@ class NewMovieForm extends Component {
         //If all is not well, show form errors
         //If all is well
         this.props.addMovie(movieObject);
+        this.props.closeForm();
     }
 
     toggleAdvanced() {
@@ -161,7 +162,6 @@ class NewMovieForm extends Component {
 
     //TODO: Form validation
     //TODO: Submit form
-    //TODO: Color input circle
     render() {
         console.log('rendering movie form');
         let formClasses = this.props.isOpen

@@ -19,7 +19,9 @@ export default class App extends Component {
             searchValue: '',
             searchResults: [],
             deletedIndices: [],
-            formOpen: false
+            formOpen: false,
+            log: [],
+            logId: 0
         };
 
         //https://github.com/algolia/algoliasearch-client-javascript#nodejs--react-native--browserify--webpack
@@ -72,8 +74,37 @@ export default class App extends Component {
         this.debouncedQuery(query);
     }
 
+    addLogEntry(message, type) {
+        let log = this.state.log,
+            id = this.getNextLogId();
+        log.push({id, message, type});
+        this.setState({
+            log
+        }, () => {
+            setTimeout(() => {
+                this.removeLogEntry(id)
+            }, 1000)
+        });
+    }
+
+    getNextLogId() {
+        let logId = this.state.logId + 1;
+        this.setState({logId});
+        return logId;
+    }
+
+    removeLogEntry(entryId) {
+        let log = this.state.log;
+        log = log.filter(message => message.id !== entryId);
+        this.setState({log});
+    }
+
     addMovie(movieObject) {
-        api.addMovie(movieObject, this.updateResults.bind(this));
+        //this.addLogEntry('Movie will be added', 'adding');
+        api.addMovie(movieObject, () => {
+            this.addLogEntry('Movie added', 'added');
+            this.updateResults();
+        });
     }
 
     openForm() {
@@ -91,7 +122,9 @@ export default class App extends Component {
             deletedIndices = this.state.deletedIndices;
         deletedIndices.push(id);
         this.setState({searchResults: results, deletedIndices});
+        this.addLogEntry('Movie will be deleted', 'deleting');
         api.deleteMovie(id, () => {
+            this.addLogEntry('Movie deleted', 'deleted');
             this.updateResults.call(this, id)
         });
     }
@@ -104,15 +137,23 @@ export default class App extends Component {
     //TODO: shouldComponentUpdate to determine if we need to update the app -- or simply pass it into the query container
     render() {
         console.log('rendering app');
+        console.log(this.state.log);
         let appClasses = this.state.formOpen
-            ? 'app app--locked'
-            : 'app';
+                ? 'app app--locked'
+                : 'app',
+            log = (
+                <ul className="app__log">
+                    {this.state.log.map(entry => <li key={'app-log-' + entry.id} className={'app__log-entry app__log-entry' + entry.type}>{entry.message}</li>)}
+                </ul>
+            );
         //<Results index={this.index} query={this.state.searchValue} />
         return (
             <div className={appClasses}>
                 <div className="app__inner">
-                    <button className="button" onClick={this.openForm.bind(this)} title="Add new movie" aria-label="Add new movie">New Movie</button>
-                    <SearchBar value={this.state.searchValue} onChange={this.handleSearchChange.bind(this)}/>
+                    <button className="button" onClick={this.openForm.bind(this)} title="Add new movie" aria-label="Add new movie">
+                        New Movie
+                    </button>
+                    <SearchBar value={this.state.searchValue} onChange={this.handleSearchChange.bind(this)}/> {log}
                     <MovieGrid movies={this.state.searchResults} deleteMovie={this.deleteMovie.bind(this)}/>
                 </div>
                 <NewMovieForm isOpen={this.state.formOpen} addMovie={this.addMovie.bind(this)} closeForm={this.closeForm.bind(this)}/>
