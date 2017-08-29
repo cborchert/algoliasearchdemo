@@ -5,17 +5,15 @@ class MoviesController < ApplicationController
     end
 
     def create
+        @movie = Movie.create(movie_params);
+
+        # The following saves 200ms to 2000ms of transaction time.
+        # Does it have any negative consequences??
         # Movie.without_auto_index do
-            puts movie_params;
-            @movie = Movie.create(movie_params);
-            # set new movie objectID based on its id
-            # this is necessary for the
-            # @movie.objectID = @movie.id
-            # @movie.save
+            # @movie = Movie.create(movie_params);
         # end
-        # only update the current entry. Saves on transaction time, but will it lead to inaccuracies?
         # @movie.index!
-        # Movie.reindex
+
         render json: @movie
     end
 
