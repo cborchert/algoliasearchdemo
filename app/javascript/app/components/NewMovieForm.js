@@ -261,9 +261,9 @@ class NewMovieForm extends Component {
                                 {genresInputs}
 
                             </div>
-                            <TextInput className="new-movie-form__rating-input" label="rating" keyName="rating" onChange={this.handleChange.bind(this)} value={this.state.rating}/>
-                            <TextInput className="new-movie-form__year-input" label="year" keyName="year" onChange={this.handleChange.bind(this)} value={this.state.year}/>
-                            <TextInput className="new-movie-form__score-input" label="score" keyName="score" onChange={this.handleChange.bind(this)} value={this.state.score}/>
+                            <TextInput className="new-movie-form__rating-input" label="rating" keyName="rating" onChange={this.handleChange.bind(this)} value={this.state.rating} type="number" min="0" max="5" step="0.1"/>
+                            <TextInput className="new-movie-form__year-input" label="year" keyName="year" onChange={this.handleChange.bind(this)} value={this.state.year} type="number" min="1800" max="99999" step="1"/>
+                            <TextInput className="new-movie-form__score-input" label="score" keyName="score" onChange={this.handleChange.bind(this)} value={this.state.score} type="number" min="0" max="10" step="0.1"/>
 
                         </div>
                     </div>

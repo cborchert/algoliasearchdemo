@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import tinycolor from 'tinycolor2';
+import PropTypes from 'prop-types';
 import {GithubPicker} from 'react-color';
 import '../styles/TextInput.scss';
 
-export default class TextInput extends Component {
+class TextInput extends Component {
 
     constructor(props) {
         super(props);
@@ -40,7 +41,6 @@ export default class TextInput extends Component {
 
     render() {
         console.log('rendering text');
-        console.log(this.state.value);
         let styles = {},
             colors = [
                 "#e74c3c",
@@ -69,7 +69,14 @@ export default class TextInput extends Component {
             colorPickerClasses = this.state.pickerOpen
                 ? 'text-input__color-picker text-input__color-picker--open'
                 : 'text-input__color-picker',
-            classes = 'text-input';
+            classes = 'text-input',
+            placeholder = this.props.placeholder == ''
+                ? this.props.label
+                : this.props.placeholder;
+
+        if (this.props.hidePlaceholder) {
+            placeholder = '';
+        }
 
         if (this.props.features && this.props.features.indexOf('previewColor') >= 0) {
             colorPreview = (
@@ -98,9 +105,34 @@ export default class TextInput extends Component {
                 <label>{this.props.label}{colorPreview}</label>
                 <div>
                     {colorPicker}
-                    <input value={this.state.value} onChange={this.handleChange.bind(this)}/>
+                    <input type={this.props.type} value={this.state.value} placeholder={placeholder} onChange={this.handleChange.bind(this)} step={this.props.step} min={this.props.min} max={this.props.max}/>
                 </div>
             </div>
         );
     }
 }
+
+//PropTypes
+TextInput.propTypes = {
+    label: PropTypes.string,
+    features: PropTypes.array,
+    type: PropTypes.string,
+    step: PropTypes.string,
+    min: PropTypes.string,
+    max: PropTypes.string,
+    placeholder: PropTypes.string,
+    hidePlaceholder: PropTypes.bool
+};
+
+TextInput.defaultProps = {
+    label: '',
+    features: '',
+    type: 'text',
+    step: '',
+    min: '',
+    max: '',
+    placeholder: '',
+    hidePlaceholder: false
+};
+
+export default TextInput;
