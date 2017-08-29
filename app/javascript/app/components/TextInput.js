@@ -73,7 +73,7 @@ export default class TextInput extends Component {
 
         if (this.props.features && this.props.features.indexOf('previewColor') >= 0) {
             colorPreview = (
-                <div className="text-input__color-preview" onClick={this.togglePicker.bind(this)}>
+                <div className="text-input__color-preview" onClick={this.togglePicker.bind(this)} title="Toggle color picker" aria-label="Toggle color picker">
                     <span className="text-input__color-preview-icon icon-drop" style={{
                         color: tinycolor(this.state.value).toHexString()
                     }}/>

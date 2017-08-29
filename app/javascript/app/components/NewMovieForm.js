@@ -196,7 +196,7 @@ class NewMovieForm extends Component {
                     <div className="new-movie-form__repeater-field" key={'genres-input-' + i}>
                         <span className="icon-cancel new-movie-form__remove-field-instance new-movie-form__remove-genre" onClick={() => {
                             this.removeGenre(i)
-                        }}/>
+                        }} title="Remove genre from movie" aria-label="Remove genre from movie"/>
                         <TextInput className="new-movie-form__genre-input" label="genre" keyName="genre" keyIndex={i} onChange={this.handleChange.bind(this)} value={genre}/>
                     </div>
                 );
@@ -208,7 +208,7 @@ class NewMovieForm extends Component {
                     <div className="new-movie-form__repeater-field" key={'actors-input-group-' + i}>
                         <span className="icon-cancel new-movie-form__remove-field-instance new-movie-form__remove-actor" onClick={() => {
                             this.removeActor(i)
-                        }}/>
+                        }} title="Remove actor from movie" aria-label="Remove actor from movie"/>
                         <TextInput className="new-movie-form__actor-input" label="actor" keyName="actors" keyIndex={i} value={actor} onChange={this.handleChange.bind(this)}/>
                         <TextInput className="new-movie-form__actor-image-input" label="actor image url" keyName="actor_images" keyIndex={i} value={this.state.actor_images[i]} onChange={this.handleChange.bind(this)}/>
                     </div>
@@ -221,7 +221,7 @@ class NewMovieForm extends Component {
                     <div className="new-movie-form__repeater-field" key={'alternative-title-input-' + i}>
                         <span className="icon-cancel new-movie-form__remove-field-instance new-movie-form__remove-alternative-title" onClick={() => {
                             this.removeAlternativeTitle(i)
-                        }}/>
+                        }} title="Remove alternative title from movie" aria-label="Remove alternative title from movie"/>
                         <TextInput className="new-movie-form__alternative-title-input" label="alternative title" keyName="alternative_titles" keyIndex={i} onChange={this.handleChange.bind(this)} value={alternativeTitle}/>
                     </div>
                 );
@@ -241,23 +241,23 @@ class NewMovieForm extends Component {
                     <TextInput className="new-movie-form__image-input" label="image url" keyName="image" onChange={this.handleChange.bind(this)} value={this.state.image}/>
                     <TextInput className="new-movie-form__color-input" label="color" keyName="color" onChange={this.handleChange.bind(this)} value={this.state.color} features={['previewColor']}/>
                     <div className={advancedClasses}>
-                        <button className="button new-movie-form__toggle-advanced" onClick={this.toggleAdvanced.bind(this)}>
+                        <button className="button new-movie-form__toggle-advanced" onClick={this.toggleAdvanced.bind(this)} title={advancedToggleButtonInner} aria-label={advancedToggleButtonInner}>
                             {advancedToggleButtonInner}
                         </button>
                         <div className="new-movie-form__advanced__inner">
                             <div className="new-movie-form__repeater-field-container">
                                 <h5>Alternative Titles
-                                    <span className="icon-plus new-movie-form__repeater-field-add new-movie-form__add-alternative-title" onClick={this.addAlternativeTitle.bind(this)}/></h5>
+                                    <span className="icon-plus new-movie-form__repeater-field-add new-movie-form__add-alternative-title" onClick={this.addAlternativeTitle.bind(this)} title="Add alternative title to movie" aria-label="Add alternative title to movie"/></h5>
                                 {alternativeTitlesInputs}
 
                             </div>
                             <div className="new-movie-form__repeater-field-container">
-                                <h5>Actors<span className="icon-plus new-movie-form__repeater-field-add new-movie-form__add-actor" onClick={this.addActor.bind(this)}/></h5>
+                                <h5>Actors<span className="icon-plus new-movie-form__repeater-field-add new-movie-form__add-actor" onClick={this.addActor.bind(this)} title="Add actor to movie" aria-label="Add actor to movie"/></h5>
                                 {actorsInputGroups}
 
                             </div>
                             <div className="new-movie-form__repeater-field-container">
-                                <h5>Genres<span className="icon-plus new-movie-form__repeater-field-add new-movie-form__add-genre" onClick={this.addGenre.bind(this)}/></h5>
+                                <h5>Genres<span className="icon-plus new-movie-form__repeater-field-add new-movie-form__add-genre" onClick={this.addGenre.bind(this)} title="Add genre to movie" aria-label="Add genre to movie"/></h5>
                                 {genresInputs}
 
                             </div>
@@ -275,7 +275,7 @@ class NewMovieForm extends Component {
                     </button>
                 </div>
 
-                <span onClick={this.closeForm.bind(this)} className="icon-cancel new-movie-form__close"/>
+                <span onClick={this.closeForm.bind(this)} className="icon-cancel new-movie-form__close" title="Close" aria-label="Close"/>
             </div>
         );
     }

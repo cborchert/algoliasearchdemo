@@ -115,7 +115,7 @@ class Movie extends Component {
             deleteMovie = this.props.disableDelete
                 ? ''
                 : (
-                    <div className="movie__delete movie__additional" onClick={this.toggleDeleteMenu.bind(this)}><span className="movie__delete-icon icon-delete"/></div>
+                    <div className="movie__delete movie__additional" onClick={this.toggleDeleteMenu.bind(this)}><span className="movie__delete-icon icon-delete" title="Delete movie" aria-label="Delete movie"/></div>
                 );
         }
         if (this.state.deleteMenuOpen) {
@@ -125,10 +125,10 @@ class Movie extends Component {
                     <div className="movie__delete-menu__inner">
                         <h2>Are you sure you want to delete this movie?</h2>
                         <p>
-                            <button className="button button--large movie__delete-menu__cancel" onClick={this.toggleDeleteMenu.bind(this)}>Cancel</button>
+                            <button className="button button--large movie__delete-menu__cancel" onClick={this.toggleDeleteMenu.bind(this)} title="Cancel deletion" aria-label="Cancel deletion">Cancel</button>
                             <button className="button button--red button--large movie__delete-menu__delete" onClick={() => {
                                 this.props.deleteMovie(this.props.movieObject.objectID)
-                            }}>Delete</button>
+                            }} title="Confirm deletion" aria-label="Confirm deletion">Delete</button>
                         </p>
                     </div>
                 </div>
@@ -140,7 +140,7 @@ class Movie extends Component {
                 <div className="movie__inner">
                     <img className="movie__image" src={image}/>
                     <div className="movie__details">
-                        <div className="movie__title" onClick={this.toggleExpanded.bind(this)}>{this.props.movieObject.title}</div>
+                        <div className="movie__title" onClick={this.toggleExpanded.bind(this)} title="See more details about this movie" aria-label="See more details about this movie">{this.props.movieObject.title}</div>
                         <div className="movie__year">{this.props.movieObject.year}</div>
                         <div className="movie__rating">
                             <span className={`movie__rating-icon icon-${ratingEmotion}-full`} title={`Rated ${this.props.movieObject.rating}/5`}/>
@@ -151,7 +151,7 @@ class Movie extends Component {
 
                     </div>
                 </div>
-                <div className="movie__expand" onClick={this.toggleExpanded.bind(this)}><span className={`movie__expand-icon ${expandIcon}`}/></div>
+                <div className="movie__expand" onClick={this.toggleExpanded.bind(this)}><span className={`movie__expand-icon ${expandIcon}`} title="See more details about this movie" aria-label="See more details about this movie"/></div>
                 {deleteMovie}
                 {deleteMenu}
             </div>

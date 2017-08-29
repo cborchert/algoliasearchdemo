@@ -111,7 +111,7 @@ export default class App extends Component {
         return (
             <div className={appClasses}>
                 <div className="app__inner">
-                    <button className="button" onClick={this.openForm.bind(this)}>New Movie</button>
+                    <button className="button" onClick={this.openForm.bind(this)} title="Add new movie" aria-label="Add new movie">New Movie</button>
                     <SearchBar value={this.state.searchValue} onChange={this.handleSearchChange.bind(this)}/>
                     <MovieGrid movies={this.state.searchResults} deleteMovie={this.deleteMovie.bind(this)}/>
                 </div>
