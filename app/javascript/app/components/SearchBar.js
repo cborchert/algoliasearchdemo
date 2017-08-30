@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import '../styles/SearchBar.scss';
 
-//The SearchBar component can be pure -- at this level of an application, we don't need internalized state.
-//We just receive state from the parent and pass the changed value back to the parent
 //TODO: Styling
 //TODO: proptypes
-export default class SearchBar extends Component {
+class SearchBar extends Component {
 
     constructor(props) {
         super(props);
@@ -27,3 +26,18 @@ export default class SearchBar extends Component {
         );
     }
 }
+
+//PropTypes
+SearchBar.propTypes = {
+    value: PropTypes.string,
+    className: PropTypes.string,
+    onChange: PropTypes.func
+};
+
+SearchBar.defaultProps = {
+    value: '',
+    onChange: '',
+    onChange: () => {}
+}
+
+export default SearchBar;

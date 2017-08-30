@@ -3,10 +3,6 @@ import PropTypes from 'prop-types';
 import Movie from './Movie';
 import '../styles/MovieGrid.scss';
 
-//Since Algolia search is asynchronous
-//https://www.algolia.com/doc/api-reference/api-methods/search/
-//TODO: Styling
-//TODO: proptypes
 class MovieGrid extends Component {
 
     shouldComponentUpdate(nextProps) {
@@ -48,11 +44,13 @@ class MovieGrid extends Component {
 
 //PropTypes
 MovieGrid.propTypes = {
-    movies: PropTypes.array
+    movies: PropTypes.array,
+    deleteMovie: PropTypes.func
 };
 
 MovieGrid.defaultProps = {
-    movies: []
+    movies: [],
+    deleteMovie: () => {}
 }
 
 export default MovieGrid;

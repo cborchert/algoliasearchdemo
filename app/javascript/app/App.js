@@ -82,9 +82,7 @@ export default class App extends Component {
         this.props.history.push('/');
     }
 
-    //TODO: In development, at least, the database gets locked when running several deletes consecutively, returning 500 errors
     deleteMovie(id) {
-        // console.log('deleting ' + id);
         //Remove the hit from the results preemptively (assume success)
         let results = this.state.searchResults.filter(result => result.objectID !== id),
             deletedIndices = this.state.deletedIndices;
@@ -107,11 +105,8 @@ export default class App extends Component {
         // }, 500);
     }
 
-    //TODO: shouldComponentUpdate to determine if we need to update the app -- or simply pass it into the query container
     render() {
         // console.log('rendering app');
-
-        console.log(this.props.location);
         let formOpen = this.props.location.pathname == '/new',
             appClasses = formOpen
                 ? 'app app--locked'

@@ -116,11 +116,11 @@ class NewMovieForm extends Component {
     }
 
     submitMovie() {
-        //TODO: validate movie object
-        //Movie title is not blank
+        //Double check that there are no errors before sending the form
+        if (this.state.inputErrors.length > 0) {
+            return false;
+        }
         let movieObject = this.createMovieObject();
-        //If all is not well, show form errors
-        //If all is well
         this.props.addMovie(movieObject);
         this.closeForm();
     }
@@ -145,7 +145,8 @@ class NewMovieForm extends Component {
             rating: '3',
             score: '',
             year: '',
-            advancedOpen: false
+            advancedOpen: false,
+            inputErrors: []
         }, this.props.closeForm);
     }
 
@@ -188,8 +189,6 @@ class NewMovieForm extends Component {
         }
     }
 
-    //TODO: Form validation
-    //TODO: Submit form
     render() {
         // console.log('rendering movie form');
         let formClasses = this.props.isOpen

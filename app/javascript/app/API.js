@@ -20,8 +20,7 @@ class API {
     }
 
     deleteMovie(id, callback) {
-        //TODO: Check that id is a number
-        const ENDPOINT = '/api/1/movies/' + id;
+        const ENDPOINT = '/api/1/movies/' + Number(id);
         axios.delete(ENDPOINT).then(function(data) {
             console.log(data);
             callback();

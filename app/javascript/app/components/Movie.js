@@ -3,11 +3,6 @@ import PropTypes from 'prop-types';
 import tinycolor from 'tinycolor2';
 import '../styles/Movie.scss';
 
-//The SearchBar component can be pure -- at this level of an application, we don't need internalized state.
-//We just receive state from the parent and pass the changed value back to the parent
-//TODO: Styling
-//TODO: proptypes
-//TODO: Add a confirmation before allowing delete
 class Movie extends Component {
 
     constructor(props) {
@@ -39,7 +34,6 @@ class Movie extends Component {
     }
 
     render() {
-        // console.log('rendering movie');
         // console.log('rendering movie');
         let color = this.props.movieObject.color
                 ? this.props.movieObject.color
