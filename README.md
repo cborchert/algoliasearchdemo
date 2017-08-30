@@ -4,17 +4,26 @@ A simple rails/react app to demonstrate working with Algolia search on a databas
 
 ## Demo
 
-## Ruby version
+## Dependencies
+
+### Ruby 2.4.1
 
 Built on Ruby version 2.4.1 to take advantage of the webpacker gem. See this [Medium post](https://medium.com/statuscode/introducing-webpacker-7136d66cddfb) or [this one](https://medium.com/@hpux/rails-5-1-loves-javascript-a1d84d5318b) for more information about using the webpacker gem in rails.
 
+### npm / yarn
+
+We're using yarn for this project just because it seems to be a bit more reliable and a bit quicker, too.
+
 ## Installation
 
-  - Git pull
-  - npm/yarn install
-  - bundle install
+  - Run `git clone https://github.com/cborchert/algoliasearchdemo.git`
+  - Change to the package directory
+  - Run `yarn install` to install all Javascript dependencies
+  - Run `bundle install` to install all Ruby dependencies
+  - Run `rails db:migrate` to initialize the Movie model
+  - Run `rails db:seed` to populate the database (and Algolia app!) with the starter data set (this will take a minute... be patient, stretch your legs :) )
 
- Test the install by running `./bin/server` and visiting localhost:5000
+Once the above is done, you'll be able to play with the app locally by running `bin/server` and visiting [localhost:5000](http://localhost:5000).
 
 ## Configuration
 
@@ -28,16 +37,11 @@ Algolia search-only credentials live in `constructor` method of `app/javascript/
 
 Algolia search settings are set up in the `constructor` and `runAlgoliaQuery` methods of `app/javascript/app/APP.js`
 
-## Rake tasks
-
-If you ever need to repopulate the model/index from movies.json, use `rake algolia:populate_from_json`.
-
-## Database creation
-
-
 ## Database initialization
 
 Make sure to run `rails db:migrate` to initialize the Movie model correctly and then `rails db:seed` to load the default data into the Movie model. This will take a minute since there are almost 6000 movies by default.
+
+If you ever need to repopulate the model/index from movies.json, use `rake algolia:populate_from_json`.
 
 
 ## Endpoints/Routing
