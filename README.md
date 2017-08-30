@@ -4,6 +4,8 @@ A simple rails/react app to demonstrate working with Algolia search on a databas
 
 ## Demo
 
+The app has been deployed to heroku. Check out the [demo](https://algoliasearchdemo.herokuapp.com).
+
 ## Dependencies
 
 ### Ruby 2.4.1
@@ -57,17 +59,6 @@ The following endpoints are set up on the backend using `config/routes.rb`:
 Since all other requests are sent in tact to the React app, it can handle routing itself. Currently the app makes use of the path `/new` to display the new movie form. All other requests (except those handled by the backend) simply pass the user to the React Application. This behavior is handled in `app/javascript/app/index.js` and in the `render` method of `app/javascript/app/APP.js`
 
 
-## Rake tasks
-
-If you ever need to repopulate the model/index from movies.json, use `rake algolia:populate_from_json`.
-
-## Database creation
-
-
-## Database initialization
-
-Make sure to run `rails db:migrate` to initialize the Movie model correctly and then `rails db:seed` to load the default data into the Movie model. This will take a minute since there are almost 6000 movies by default.
-
 ## Front end files
 
 All front end files can be found in `./app/javascript/`. Webpacker uses `./app/javascript/packs/application.js` as an entry point. The actual React App is in `./app/javascript/app`. Aside from the *real* entry point `index.js`, the app container `App.js`, and the front end API `API.js`, all React components are found in `./app/javascript/app/components` all styles are found in `./app/javascript/app/styles`.
@@ -90,8 +81,25 @@ For more information on the format of our tests, look at the [inspiration](http:
 
 Run `./bin/server` to deploy a hot-reloading webserver locally. If nothing else is running on localhost port 5000, you can visit [http://localhost:5000](http://localhost:5000) to play with the app.
 
-## Services (job queues, cache servers, search engines, etc.)
-
 ## Deployment instructions
 
-## ...
+If you want to deploy to heroku, you'll need to change the settings in `./config/database.yml` to use postgres since sqlite3 is not available on heroku.
+
+In `./config/database.yml` you'll see:
+
+```
+default: &default
+  adapter: sqlite3
+  # adapter: postgresql
+```
+
+Uncomment `# adapter: postgresql` and comment out `adapter: sqlite3`. Commit your changes and you're ready to set up your heroku app using the following commands:
+
+```
+heroku create
+heroku buildpacks:add --index 1 heroku/nodejs
+heroku buildpacks:add --index 2 heroku/ruby
+git push heroku master
+```
+
+Or, you could save yourself the stress and use the (demo)[https://algoliasearchdemo.herokuapp.com] ;-)
