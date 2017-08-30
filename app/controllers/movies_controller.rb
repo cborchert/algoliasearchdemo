@@ -12,7 +12,7 @@ class MoviesController < ApplicationController
         #Remove everything that is not a valid key
         filtered_params = movie_params.slice('title', 'image', 'color', 'actors', 'actor_facets', 'alternative_titles', 'genre', 'rating', 'score', 'year')
         # Validate values
-        filtered_params.each do |key|
+        filtered_params.each_pair do |key, value|
 
             if key == 'actors' || key == 'actor_facets' || key == 'genre' || key == 'alternative_titles'
                 #must be an array
@@ -22,7 +22,8 @@ class MoviesController < ApplicationController
                     break
                 else
                     #whose children are all string
-                    filtered_params[key].each do |subkey|
+                    filtered_params[key].each_with_index do |subvalue, subkey|
+
                         if filtered_params[key][subkey].is_a? String
                             filtered_params[key][subkey] = sanitize filtered_params[key][subkey]
                         else

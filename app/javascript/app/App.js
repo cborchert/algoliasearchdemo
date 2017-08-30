@@ -21,7 +21,8 @@ export default class App extends Component {
             searchResults: [],
             deletedIndices: [],
             formOpen: false,
-            numberHits: 0
+            numberHits: 0,
+            pollingInterval: false
         };
 
         //https://github.com/algolia/algoliasearch-client-javascript#nodejs--react-native--browserify--webpack
@@ -57,7 +58,7 @@ export default class App extends Component {
         }.bind(this));
     }
 
-    clearCache(popDeletedId) {
+    clearCache() {
         // console.log('updating results');
         this.client.clearCache();
         this.index.clearCache();
@@ -101,13 +102,25 @@ export default class App extends Component {
     componentDidMount() {
         // this.runAlgoliaQuery(this.state.searchValue);
         this.debouncedQuery(this.state.searchValue);
-        //Consider polling with a cleared cache every 1.5 seconds in order to guarantee that added and deleted movies are shown correctly...
-        //either here or in this.clearCache() which is called after add/remove actions
-        // setTimeout(() => {
-        //     this.client.clearCache();
-        //     this.index.clearCache();
-        //     this.debouncedQuery(this.state.searchValue);
-        // }, 500);
+        //polling with a cleared cache every 2.5 seconds in order to guarantee that added and deleted movies are shown correctly...
+        let interval = setInterval(() => {
+            this.clearCache();
+            //If the user has been playing with loading more, we should only load the number of hits they already have on the screen
+            if (this.state.searchResults.length <= 24) {
+                this.debouncedQuery(this.state.searchValue);
+            } else {
+                this.debouncedQuery(this.state.searchValue, this.state.searchResults.length);
+            }
+
+        }, 2500);
+
+        this.setState({pollingInterval: interval});
+    }
+
+    componentWillUnmount() {
+
+        clearInterval(this.state.pollingInterval);
+
     }
 
     loadMore() {
