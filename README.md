@@ -102,4 +102,4 @@ heroku buildpacks:add --index 2 heroku/ruby
 git push heroku master
 ```
 
-Or, you could save yourself the stress and use the (demo)[https://algoliasearchdemo.herokuapp.com] ;-)
+Or, you could save yourself the stress and use the [demo](https://algoliasearchdemo.herokuapp.com) ;-)
