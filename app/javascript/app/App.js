@@ -20,7 +20,8 @@ export default class App extends Component {
             searchValue: '',
             searchResults: [],
             deletedIndices: [],
-            formOpen: false
+            formOpen: false,
+            numberHits: 0
         };
 
         //https://github.com/algolia/algoliasearch-client-javascript#nodejs--react-native--browserify--webpack
@@ -34,21 +35,25 @@ export default class App extends Component {
 
     }
 
-    runAlgoliaQuery(queryString) {
+    runAlgoliaQuery(query, hitsPerPage) {
+        if (typeof hitsPerPage == 'undefined' || Number(hitsPerPage) == 0) {
+            hitsPerPage = 24;
+        }
         //Need to clear the cache in order for deleted queries not to show up again, and for new queries to show up
         this.index.search({
-            query: queryString,
-            hitsPerPage: 24,
+            query,
+            hitsPerPage,
             attributesToHighlight: []
         }, function searchDone(err, content) {
             if (err) {
                 console.error(err);
                 return;
             }
+            console.log(content);
             //Let's remove any hits that match our deleted indices (since we might be pulling up old data!)
             let hits = content.hits.filter(hit => this.state.deletedIndices.indexOf(hit.objectID) == -1);
             // console.log(hits)
-            this.setState({searchResults: hits});
+            this.setState({searchResults: hits, numberHits: content.nbHits});
         }.bind(this));
     }
 
@@ -105,6 +110,10 @@ export default class App extends Component {
         // }, 500);
     }
 
+    loadMore() {
+        this.runAlgoliaQuery(this.state.searchValue, this.state.searchResults.length + 24);
+    }
+
     render() {
         // console.log('rendering app');
         let formOpen = this.props.location.pathname == '/new',
@@ -113,7 +122,11 @@ export default class App extends Component {
                 : 'app',
             newForm = formOpen
                 ? (<NewMovieForm isOpen={true} addMovie={this.addMovie.bind(this)} closeForm={this.closeForm.bind(this)}/>)
+                : '',
+            loadMoreButton = this.state.searchResults.length < this.state.numberHits && this.state.searchResults.length < 1000
+                ? <button className='button button--large app__load-more' onClick={this.loadMore.bind(this)}>Load more</button>
                 : '';
+
         return (
             <div className={appClasses}>
                 <div className="app__header">
@@ -125,7 +138,7 @@ export default class App extends Component {
                     </button>
                 </div>
                 <div className="app__inner">
-                    <MovieGrid movies={this.state.searchResults} deleteMovie={this.deleteMovie.bind(this)}/>
+                    <MovieGrid movies={this.state.searchResults} deleteMovie={this.deleteMovie.bind(this)}/> {loadMoreButton}
                 </div>
                 {newForm}
             </div>

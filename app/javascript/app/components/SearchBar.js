@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import '../styles/SearchBar.scss';
 
-//TODO: Styling
-//TODO: proptypes
 class SearchBar extends Component {
 
     constructor(props) {
