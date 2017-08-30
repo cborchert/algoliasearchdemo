@@ -247,9 +247,9 @@ class NewMovieForm extends Component {
                         <Movie className="new-movie-form__movie" movieObject={moviePreviewObject} disableDelete={true}/>
                     </div>
 
-                    <TextInput className="new-movie-form__title-input" label="title (required)" keyName="title" onChange={this.handleChange.bind(this)} value={this.state.title} hidePlaceholder={true}/>
+                    <TextInput className="new-movie-form__title-input" label="title" keyName="title" onChange={this.handleChange.bind(this)} value={this.state.title} hidePlaceholder={true} required={true}/>
                     <TextInput className="new-movie-form__image-input" label="image url" keyName="image" onChange={this.handleChange.bind(this)} value={this.state.image} hidePlaceholder={true}/>
-                    <TextInput className="new-movie-form__color-input" label="color" keyName="color" onChange={this.handleChange.bind(this)} value={this.state.color} features={['previewColor']} placeholder="Enter a valid html color"/>
+                    <TextInput className="new-movie-form__color-input" label="color" keyName="color" onChange={this.handleChange.bind(this)} value={this.state.color} features={['previewColor']} type="color" placeholder="Enter a valid html color" required={true}/>
                     <div className={advancedClasses}>
                         <button className="button new-movie-form__toggle-advanced" onClick={this.toggleAdvanced.bind(this)} title={advancedToggleButtonInner} aria-label={advancedToggleButtonInner}>
                             {advancedToggleButtonInner}
@@ -272,8 +272,8 @@ class NewMovieForm extends Component {
 
                             </div>
                             <TextInput className="new-movie-form__rating-input" label="rating" keyName="rating" onChange={this.handleChange.bind(this)} value={this.state.rating} type="number" min="0" max="5" step="0.1" placeholder="Enter a rating between 0 and 5"/>
-                            <TextInput className="new-movie-form__year-input" label="year" keyName="year" onChange={this.handleChange.bind(this)} value={this.state.year} type="number" min="1800" step="1" placeholder="Enter a year after 1799"/>
-                            <TextInput className="new-movie-form__score-input" label="score" keyName="score" onChange={this.handleChange.bind(this)} value={this.state.score} type="number" min="0" max="10" step="0.1" placeholder="Enter a score between 0 and 10"/>
+                            <TextInput className="new-movie-form__year-input" label="year" keyName="year" onChange={this.handleChange.bind(this)} value={this.state.year} type="number" min="1800" step="1" placeholder="Enter a year after 1799" integer={true}/>
+                            <TextInput className="new-movie-form__score-input" label="score" keyName="score" onChange={this.handleChange.bind(this)} value={this.state.score} type="number" min="0" max="10" step="0.05" placeholder="Enter a score between 0 and 10"/>
 
                         </div>
                     </div>

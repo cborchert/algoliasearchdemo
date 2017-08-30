@@ -13,7 +13,9 @@ class TextInput extends Component {
             : '';
         this.state = {
             value: value,
-            pickerOpen: false
+            pickerOpen: false,
+            valid: true,
+            errorMessage: ''
         };
     }
 
@@ -27,7 +29,11 @@ class TextInput extends Component {
         if (event) {
             value = event.target.value
         }
-        this.setState({value});
+        this.setState({
+            value
+        }, () => {
+            this.validate()
+        });
         if (this.props.onChange && this.props.keyName) {
             this.props.onChange(this.props.keyName, value, this.props.keyIndex);
         }
@@ -39,9 +45,83 @@ class TextInput extends Component {
         }
     }
 
+    validate() {
+        console.log(this.state.value)
+        let isValid = true,
+            message = '',
+            value = this.state.value;
+        //check is empty for required
+        if (this.props.required && value.trim() == '') {
+            isValid = false;
+            message = 'must not be empty';
+        }
+        //check numbers
+        if (isValid && this.props.type == 'number') {
+            //check is numeric
+            if (value !== '' && !(!isNaN(parseFloat(value)) && isFinite(value))) {
+                console.log(this.state.value);
+                console.log(this.state.value === '');
+                console.log('!isNaN(parseFloat(value))', 'isFinite(value)');
+                console.log(!isNaN(parseFloat(value)), isFinite(value));
+                isValid = false;
+                message = 'must be a numeric value';
+            }
+            //check min val
+            if (value !== '' && isValid && this.props.min !== '' && Number(value) < Number(this.props.min)) {
+                isValid = false;
+                message = `must be a number greater than or equal to ${Number(this.props.min)}`;
+            }
+            //check max val
+            if (value !== '' && isValid && this.props.max !== '' && Number(value) > Number(this.props.max)) {
+                isValid = false;
+                message = `must be a number less than or equal to ${Number(this.props.max)}`;
+            }
+            //check is integer
+            if (value !== '' && isValid && this.props.integer && !Number.isInteger(Number(value))) {
+                isValid = false;
+                message = `must be an integer`;
+            }
+        }
+        //check color
+        if (isValid && this.props.type == 'color' && !tinycolor(value).isValid()) {
+            isValid = false;
+            message = `must be an HTML color`;
+        }
+        this.setState({valid: isValid, message});
+        //Send off to parent
+
+    }
+
+    componentDidMount() {
+        this.validate();
+    }
+
     render() {
         // console.log('rendering text');
         let styles = {},
+            colors = [],
+            type = this.props.type,
+            label = this.props.label,
+            colorPreview = '',
+            colorPicker = '',
+            colorPickerClasses = this.state.pickerOpen
+                ? 'text-input__color-picker text-input__color-picker--open'
+                : 'text-input__color-picker',
+            classes = 'text-input',
+            placeholder = this.props.placeholder == ''
+                ? this.props.label
+                : this.props.placeholder,
+            message = '';
+
+        if (this.props.hidePlaceholder) {
+            placeholder = '';
+        }
+
+        if (this.props.type == 'color') {
+            type = 'text';
+        }
+
+        if (this.props.features && this.props.features.indexOf('previewColor') >= 0) {
             colors = [
                 "#e74c3c",
                 "#c0392b",
@@ -63,22 +143,7 @@ class TextInput extends Component {
                 "#7f8c8d",
                 "#ecf0f1",
                 "#bdc3c7"
-            ],
-            colorPreview = '',
-            colorPicker = '',
-            colorPickerClasses = this.state.pickerOpen
-                ? 'text-input__color-picker text-input__color-picker--open'
-                : 'text-input__color-picker',
-            classes = 'text-input',
-            placeholder = this.props.placeholder == ''
-                ? this.props.label
-                : this.props.placeholder;
-
-        if (this.props.hidePlaceholder) {
-            placeholder = '';
-        }
-
-        if (this.props.features && this.props.features.indexOf('previewColor') >= 0) {
+            ];
             colorPreview = (
                 <div className="text-input__color-preview" onClick={this.togglePicker.bind(this)} title="Toggle color picker" aria-label="Toggle color picker">
                     <span className="text-input__color-preview-icon icon-drop" style={{
@@ -97,17 +162,31 @@ class TextInput extends Component {
                 </div>
             );
         }
+
         if (this.props.className) {
             classes += ` ${this.props.className}`;
         }
+
+        if (!this.state.valid) {
+            classes += ' text-input--invalid';
+            message = (
+                <div className="text-input__error">{this.state.message}</div>
+            )
+        }
+
+        if (this.props.required) {
+            label += ' (required)';
+        }
+
         return (
             <div className={classes}>
-                <label>{this.props.label}{colorPreview}
+                <label>{label}{colorPreview}
                     <div>
                         {colorPicker}
-                        <input type={this.props.type} value={this.state.value} placeholder={placeholder} onChange={this.handleChange.bind(this)} step={this.props.step} min={this.props.min} max={this.props.max}/>
+                        <input type={type} value={this.state.value} placeholder={placeholder} onChange={this.handleChange.bind(this)} step={this.props.step} min={this.props.min} max={this.props.max}/>
                     </div>
                 </label>
+                {message}
             </div>
         );
     }
@@ -122,7 +201,9 @@ TextInput.propTypes = {
     min: PropTypes.string,
     max: PropTypes.string,
     placeholder: PropTypes.string,
-    hidePlaceholder: PropTypes.bool
+    hidePlaceholder: PropTypes.bool,
+    integer: PropTypes.bool,
+    required: PropTypes.bool
 };
 
 TextInput.defaultProps = {
@@ -133,7 +214,9 @@ TextInput.defaultProps = {
     min: '',
     max: '',
     placeholder: '',
-    hidePlaceholder: false
+    hidePlaceholder: false,
+    integer: false,
+    required: false
 };
 
 export default TextInput;

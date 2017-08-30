@@ -1,6 +1,28 @@
 @import './vars';
 
 .text-input {
+    &--invalid {
+        label {
+            color: red;
+        }
+
+        input {
+            border-bottom-color: lighten($red, 10%);
+
+            &:active,
+            &:focus {
+                border-bottom-color: $red;
+            }
+        }
+    }
+
+    &__error {
+        color: $red;
+        font-size: 1rem;
+        font-style: italic;
+        padding: 0 0 1.5rem 0.2rem;
+    }
+
     &__color-preview {
         display: inline-block;
         font-size: 1rem;
