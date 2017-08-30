@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import xss from 'xss';
+import _ from 'lodash';
 import TextInput from './TextInput'
 import Movie from './Movie';
 import '../styles/NewMovieForm.scss';
@@ -21,7 +22,8 @@ class NewMovieForm extends Component {
             rating: '3',
             score: '',
             year: '',
-            advancedOpen: false
+            advancedOpen: false,
+            inputErrors: []
         }
     }
 
@@ -112,15 +114,6 @@ class NewMovieForm extends Component {
         this.setState({alternative_titles});
     }
 
-    getMovieErrors(movieObject) {
-        let errors = [];
-        //console.log('title', xss(movieObject.title).trim())
-        if (xss(movieObject.title).trim() === '') {
-            errors.push("A title is required");
-        }
-        return errors;
-    }
-
     submitMovie() {
         //TODO: validate movie object
         //Movie title is not blank
@@ -155,6 +148,30 @@ class NewMovieForm extends Component {
         }, this.props.closeForm);
     }
 
+    handleErrors(uniqueId, isValid, message) {
+        let messages = this.state.inputErrors,
+            index = _.findIndex(messages, function(message) {
+                return message.uniqueId == uniqueId;
+            });
+        //remove former errors if isValid
+        if (isValid) {
+            if (index > -1) {
+                messages.splice(index, 1);
+            }
+        } else {
+            if (index > -1) {
+                messages[index] = {
+                    uniqueId,
+                    isValid,
+                    message
+                }
+            } else {
+                messages.push({uniqueId, isValid, message});
+            }
+        }
+        this.setState({inputErrors: messages});
+    }
+
     shouldComponentUpdate(nextProps, nextState) {
         if (this.props.isOpen || nextProps.isOpen) {
             return true;
@@ -187,17 +204,14 @@ class NewMovieForm extends Component {
             actorsInputGroups = '',
             genresInputs = '',
             alternativeTitlesInputs = '',
-            movieErrorsArray = this.getMovieErrors(moviePreviewObject),
-            movieErrors = movieErrorsArray.length == 0
+            movieErrors = this.state.inputErrors.length == 0
                 ? ''
                 : (
-                    <ul className="new-movie-form__errors">
-                        {movieErrorsArray.map((error, i) => {
-                            return <li className="new-movie-form__error" key={i}>{error}</li>
-                        })}
-                    </ul>
+                    <div className="new-movie-form__errors">
+                        <div className="new-movie-form__error">Please check the form for input errors.</div>
+                    </div>
                 ),
-            submitButtonClasses = movieErrorsArray.length == 0
+            submitButtonClasses = this.state.inputErrors.length == 0
                 ? 'button button--large new-movie-form__submit'
                 : 'button button--large new-movie-form__submit button--disabled';
         if (this.state.genre.length > 0) {
@@ -207,7 +221,7 @@ class NewMovieForm extends Component {
                         <span className="icon-cancel new-movie-form__remove-field-instance new-movie-form__remove-genre" onClick={() => {
                             this.removeGenre(i)
                         }} title="Remove genre from movie" aria-label="Remove genre from movie"/>
-                        <TextInput className="new-movie-form__genre-input" label="genre" keyName="genre" keyIndex={i} onChange={this.handleChange.bind(this)} value={genre} hidePlaceholder={true}/>
+                        <TextInput className="new-movie-form__genre-input" label="genre" keyName="genre" keyIndex={i} onChange={this.handleChange.bind(this)} value={genre} hidePlaceholder={true} reportErrors={this.handleErrors.bind(this)}/>
                     </div>
                 );
             })
@@ -219,8 +233,8 @@ class NewMovieForm extends Component {
                         <span className="icon-cancel new-movie-form__remove-field-instance new-movie-form__remove-actor" onClick={() => {
                             this.removeActor(i)
                         }} title="Remove actor from movie" aria-label="Remove actor from movie"/>
-                        <TextInput className="new-movie-form__actor-input" label="actor" keyName="actors" keyIndex={i} value={actor} onChange={this.handleChange.bind(this)} hidePlaceholder={true}/>
-                        <TextInput className="new-movie-form__actor-image-input" label="actor image url" keyName="actor_images" keyIndex={i} value={this.state.actor_images[i]} onChange={this.handleChange.bind(this)} hidePlaceholder={true}/>
+                        <TextInput className="new-movie-form__actor-input" label="actor" keyName="actors" keyIndex={i} value={actor} onChange={this.handleChange.bind(this)} hidePlaceholder={true} reportErrors={this.handleErrors.bind(this)}/>
+                        <TextInput className="new-movie-form__actor-image-input" label="actor image url" keyName="actor_images" keyIndex={i} value={this.state.actor_images[i]} onChange={this.handleChange.bind(this)} hidePlaceholder={true} reportErrors={this.handleErrors.bind(this)}/>
                     </div>
                 );
             })
@@ -247,9 +261,9 @@ class NewMovieForm extends Component {
                         <Movie className="new-movie-form__movie" movieObject={moviePreviewObject} disableDelete={true}/>
                     </div>
 
-                    <TextInput className="new-movie-form__title-input" label="title" keyName="title" onChange={this.handleChange.bind(this)} value={this.state.title} hidePlaceholder={true} required={true}/>
-                    <TextInput className="new-movie-form__image-input" label="image url" keyName="image" onChange={this.handleChange.bind(this)} value={this.state.image} hidePlaceholder={true}/>
-                    <TextInput className="new-movie-form__color-input" label="color" keyName="color" onChange={this.handleChange.bind(this)} value={this.state.color} features={['previewColor']} type="color" placeholder="Enter a valid html color" required={true}/>
+                    <TextInput className="new-movie-form__title-input" label="title" keyName="title" onChange={this.handleChange.bind(this)} value={this.state.title} hidePlaceholder={true} required={true} reportErrors={this.handleErrors.bind(this)}/>
+                    <TextInput className="new-movie-form__image-input" label="image url" keyName="image" onChange={this.handleChange.bind(this)} value={this.state.image} hidePlaceholder={true} reportErrors={this.handleErrors.bind(this)}/>
+                    <TextInput className="new-movie-form__color-input" label="color" keyName="color" onChange={this.handleChange.bind(this)} value={this.state.color} features={['previewColor']} type="color" placeholder="Enter a valid html color" required={true} reportErrors={this.handleErrors.bind(this)}/>
                     <div className={advancedClasses}>
                         <button className="button new-movie-form__toggle-advanced" onClick={this.toggleAdvanced.bind(this)} title={advancedToggleButtonInner} aria-label={advancedToggleButtonInner}>
                             {advancedToggleButtonInner}
@@ -271,16 +285,16 @@ class NewMovieForm extends Component {
                                 {genresInputs}
 
                             </div>
-                            <TextInput className="new-movie-form__rating-input" label="rating" keyName="rating" onChange={this.handleChange.bind(this)} value={this.state.rating} type="number" min="0" max="5" step="0.1" placeholder="Enter a rating between 0 and 5"/>
-                            <TextInput className="new-movie-form__year-input" label="year" keyName="year" onChange={this.handleChange.bind(this)} value={this.state.year} type="number" min="1800" step="1" placeholder="Enter a year after 1799" integer={true}/>
-                            <TextInput className="new-movie-form__score-input" label="score" keyName="score" onChange={this.handleChange.bind(this)} value={this.state.score} type="number" min="0" max="10" step="0.05" placeholder="Enter a score between 0 and 10"/>
+                            <TextInput className="new-movie-form__rating-input" label="rating" keyName="rating" onChange={this.handleChange.bind(this)} value={this.state.rating} type="number" min="0" max="5" step="0.1" placeholder="Enter a rating between 0 and 5" reportErrors={this.handleErrors.bind(this)}/>
+                            <TextInput className="new-movie-form__year-input" label="year" keyName="year" onChange={this.handleChange.bind(this)} value={this.state.year} type="number" min="1800" step="1" placeholder="Enter a year after 1799" integer={true} reportErrors={this.handleErrors.bind(this)}/>
+                            <TextInput className="new-movie-form__score-input" label="score" keyName="score" onChange={this.handleChange.bind(this)} value={this.state.score} type="number" min="0" max="10" step="0.05" placeholder="Enter a score between 0 and 10" reportErrors={this.handleErrors.bind(this)}/>
 
                         </div>
                     </div>
                 </div>
                 <div className="new-movie-form__footer">
                     {movieErrors}
-                    <button className={submitButtonClasses} onClick={this.submitMovie.bind(this)} disabled={movieErrorsArray.length > 0}>
+                    <button className={submitButtonClasses} onClick={this.submitMovie.bind(this)} disabled={this.state.inputErrors.length > 0}>
                         Submit
                     </button>
                 </div>

@@ -124,19 +124,19 @@
 
     &__footer {
         position: absolute;
-        bottom: 1rem;
-        right: 1rem;
+        // bottom: 1rem;
+        // right: 1rem;
         box-sizing: border-box;
         z-index: 1000;
-        @media screen and (max-width: 550px) {
-            width: 100%;
-            bottom: 0;
-            right: 0;
-            padding: 1rem;
-            background: rgba(255,255,255,0.7);
-            width: 100%;
-            text-align: right;
-        }
+        // @media screen and (max-width: 550px) {
+        width: 100%;
+        bottom: 0;
+        right: 0;
+        padding: 1rem;
+        background: rgba(255,255,255,0.7);
+        width: 100%;
+        text-align: right;
+        // }
     }
 
     &__close {
@@ -158,6 +158,7 @@
     &__errors {
         font-size: 1.2rem;
         color: $red;
+        margin-bottom: 0.5rem;
     }
 
 }

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import tinycolor from 'tinycolor2';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import {GithubPicker} from 'react-color';
 import '../styles/TextInput.scss';
 
@@ -15,7 +16,8 @@ class TextInput extends Component {
             value: value,
             pickerOpen: false,
             valid: true,
-            errorMessage: ''
+            errorMessage: '',
+            uniqueId: _.uniqueId(this.props.label.replace(' ', '-') + '--')
         };
     }
 
@@ -46,10 +48,10 @@ class TextInput extends Component {
     }
 
     validate() {
-        console.log(this.state.value)
         let isValid = true,
             message = '',
             value = this.state.value;
+
         //check is empty for required
         if (this.props.required && value.trim() == '') {
             isValid = false;
@@ -59,10 +61,6 @@ class TextInput extends Component {
         if (isValid && this.props.type == 'number') {
             //check is numeric
             if (value !== '' && !(!isNaN(parseFloat(value)) && isFinite(value))) {
-                console.log(this.state.value);
-                console.log(this.state.value === '');
-                console.log('!isNaN(parseFloat(value))', 'isFinite(value)');
-                console.log(!isNaN(parseFloat(value)), isFinite(value));
                 isValid = false;
                 message = 'must be a numeric value';
             }
@@ -89,6 +87,7 @@ class TextInput extends Component {
         }
         this.setState({valid: isValid, message});
         //Send off to parent
+        this.props.reportErrors(this.state.uniqueId, isValid, `${this.props.label} ${message}`);
 
     }
 
@@ -203,7 +202,9 @@ TextInput.propTypes = {
     placeholder: PropTypes.string,
     hidePlaceholder: PropTypes.bool,
     integer: PropTypes.bool,
-    required: PropTypes.bool
+    required: PropTypes.bool,
+    reportErrors: PropTypes.func,
+    onChange: PropTypes.func
 };
 
 TextInput.defaultProps = {
@@ -216,7 +217,9 @@ TextInput.defaultProps = {
     placeholder: '',
     hidePlaceholder: false,
     integer: false,
-    required: false
+    required: false,
+    reportErrors: () => {},
+    onChange: () => {}
 };
 
 export default TextInput;
