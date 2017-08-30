@@ -30,7 +30,7 @@ class MovieGrid extends Component {
 
     render() {
         // console.log("Rendering movie grid");
-        let movies = '';
+        let movies = <h3>Nothing matched your search{' '}<span className="icon-emote-crying"/></h3>;
         if (this.props.movies && this.props.movies.length > 0) {
             movies = this.props.movies.map((movie, i) => {
                 return <Movie key={movie.objectID} movieObject={movie} order={2 * (i + 1)} deleteMovie={this.props.deleteMovie}/>;
