@@ -102,11 +102,12 @@ class TextInput extends Component {
         }
         return (
             <div className={classes}>
-                <label>{this.props.label}{colorPreview}</label>
-                <div>
-                    {colorPicker}
-                    <input type={this.props.type} value={this.state.value} placeholder={placeholder} onChange={this.handleChange.bind(this)} step={this.props.step} min={this.props.min} max={this.props.max}/>
-                </div>
+                <label>{this.props.label}{colorPreview}
+                    <div>
+                        {colorPicker}
+                        <input type={this.props.type} value={this.state.value} placeholder={placeholder} onChange={this.handleChange.bind(this)} step={this.props.step} min={this.props.min} max={this.props.max}/>
+                    </div>
+                </label>
             </div>
         );
     }
