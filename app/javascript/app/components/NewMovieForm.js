@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import tinycolor from 'tinycolor2';
 import xss from 'xss';
 import _ from 'lodash';
 import TextInput from './TextInput'
@@ -56,7 +57,7 @@ class NewMovieForm extends Component {
         let movie = {
             title: this.state.title,
             image: this.state.image,
-            color: this.state.color,
+            color: tinycolor(this.state.color).toHexString(),
             actors: this.state.actors,
             actor_facets: actor_facets,
             alternative_titles: this.state.alternative_titles,

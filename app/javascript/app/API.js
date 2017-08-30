@@ -4,7 +4,7 @@ import xss from 'xss';
 class API {
 
     addMovie(movieObject, callback) {
-        //TODO: Validate the movie object
+        //Validation done in form and on server side
         if (movieObject.alwaysUpdate) {
             delete movieObject.alwaysUpdate;
         }
