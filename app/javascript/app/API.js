@@ -11,7 +11,7 @@ class API {
         movieObject.objectID = '';
         const ENDPOINT = '/api/1/movies';
         axios.post(ENDPOINT, {movie: movieObject}).then(function(data) {
-            // console.log(data);
+            console.log(data);
             callback();
         }).catch(function(error) {
             console.log(error);
@@ -23,7 +23,7 @@ class API {
         //TODO: Check that id is a number
         const ENDPOINT = '/api/1/movies/' + id;
         axios.delete(ENDPOINT).then(function(data) {
-            // console.log(data);
+            console.log(data);
             callback();
         }).catch(function(error) {
             console.log(error);

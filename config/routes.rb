@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   delete 'api/1/movies/:id', to: 'movies#destroy'
   post 'api/1/movies', to: 'movies#create'
   root 'pages#index'
+  get '*path', to: 'pages#index'
 end

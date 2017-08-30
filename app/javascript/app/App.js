@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import algoliasearch from 'algoliasearch';
 import _ from 'lodash';
@@ -73,10 +74,12 @@ export default class App extends Component {
     }
 
     openForm() {
-        this.setState({formOpen: true})
+        // this.setState({formOpen: true})
+        this.props.history.push('/new');
     }
     closeForm() {
-        this.setState({formOpen: false})
+        // this.setState({formOpen: false})
+        this.props.history.push('/');
     }
 
     //TODO: In development, at least, the database gets locked when running several deletes consecutively, returning 500 errors
@@ -107,10 +110,15 @@ export default class App extends Component {
     //TODO: shouldComponentUpdate to determine if we need to update the app -- or simply pass it into the query container
     render() {
         // console.log('rendering app');
-        let appClasses = this.state.formOpen
-            ? 'app app--locked'
-            : 'app';
-        //<Results index={this.index} query={this.state.searchValue} />
+
+        console.log(this.props.location);
+        let formOpen = this.props.location.pathname == '/new',
+            appClasses = formOpen
+                ? 'app app--locked'
+                : 'app',
+            newForm = formOpen
+                ? (<NewMovieForm isOpen={true} addMovie={this.addMovie.bind(this)} closeForm={this.closeForm.bind(this)}/>)
+                : '';
         return (
             <div className={appClasses}>
                 <div className="app__header">
@@ -124,7 +132,7 @@ export default class App extends Component {
                 <div className="app__inner">
                     <MovieGrid movies={this.state.searchResults} deleteMovie={this.deleteMovie.bind(this)}/>
                 </div>
-                <NewMovieForm isOpen={this.state.formOpen} addMovie={this.addMovie.bind(this)} closeForm={this.closeForm.bind(this)}/>
+                {newForm}
             </div>
         );
     }
