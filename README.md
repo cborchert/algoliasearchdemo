@@ -40,13 +40,13 @@ Algolia credentials and index name will live in the .gitignored `config/applicat
 
 ### Frontend
 
-Algolia search-only credentials live in `app/javascript/app/GLOBALS.js` and used only in the `constructor` method of `app/javascript/app/APP.js`. Ensure that the frontend and the backend are talking to the same index and application!
+Algolia search-only credentials live in `app/javascript/app/GLOBALS.js`; they are only used by the `constructor` method of `app/javascript/app/APP.js`. Ensure that the frontend and the backend are talking to the same index and application!
 
 Algolia search settings are set up in the `constructor` and `runAlgoliaQuery` methods of `app/javascript/app/App.js`
 
 ## Database initialization
 
-Make sure that your configuration is set up before running this step (see above).
+Make sure that the configuration files are correctly set up before running this step (see above).
 Then run `rails db:migrate` to initialize the Movie model correctly and then `rails db:seed` to load the default data into the Movie model. This will take a minute since there are almost 6000 movies by default.
 
 If you ever need to repopulate the model/index from movies.json, use `rake algolia:populate_from_json`.
@@ -62,24 +62,24 @@ The following endpoints are set up on the backend using `config/routes.rb`:
      -  DELETE requests to remove the the movie record whose id is `:id`
   - `/` and all other requests are passed directly to the frontend page `app/views/pages/index.html.erb` which uses `app/javascript/packs/application.js` as an entry point for the React Application
 
-Since all other requests are sent in tact to the React app, it can handle routing itself. Currently the app makes use of the path `/new` to display the new movie form. All other requests (except those handled by the backend) simply pass the user to the React Application. This behavior is handled in `app/javascript/app/index.js` and in the `render` method of `app/javascript/app/APP.js`
+Since all other requests are sent in tact to the React app, it can handle routing itself. Currently the app makes use of the path `/new` to display the new movie form. All other requests (except those handled by the backend) simply pass the user to the React Application. This behavior is handled in `app/javascript/app/index.js` and in the `render` method of `app/javascript/app/App.js`
 
 
 ## Front end files
 
-All front end files can be found in `./app/javascript/`. Webpacker uses `./app/javascript/packs/application.js` as an entry point. The actual React App is in `./app/javascript/app`. Aside from the *real* entry point `index.js`, the app container `App.js`, and the front end API `API.js`, all React components are found in `./app/javascript/app/components` all styles are found in `./app/javascript/app/styles`.
+All front end files can be found in `app/javascript/`. Webpacker uses `app/javascript/packs/application.js` as an entry point. The actual React App is in `app/javascript/app`. Aside from the *real* entry point `index.js`, the app container `App.js`, and the front end API `API.js`, all React components are found in `app/javascript/app/components` all styles are found in `app/javascript/app/styles`.
 
 In general, a component named "Component" will have the following associated files:
-  - The component `./app/javascript/app/components/Component.js`
-  - Its styles `./app/javascript/app/styles/Component.scss`
-  - Its tests `./app/javascript/app/__test__/Component.spec.js`
+  - The component `app/javascript/app/components/Component.js`
+  - Its styles `app/javascript/app/styles/Component.scss`
+  - Its tests `app/javascript/app/__test__/Component.spec.js`
 
 
 ## Tests
 
 To test the frontend you can run `npm test` or `npm  tdd`. The tdd command runs a the test command, with the watch flag. We're using Mocha/Chai with Enzyme and Sinon.
 
-All React tests live in `./app/javascript/app/__test__/` and tests for a component named COMPONENT can be found in `COMPONENT.spec.js`. In the same folder, globals and the dom are set up in `helpers.js` and `dom.js` respectively.
+All React tests live in `app/javascript/app/__test__/` and tests for a component named COMPONENT can be found in `COMPONENT.spec.js`. In the same folder, globals and the dom are set up in `helpers.js` and `dom.js` respectively.
 
 For more information on the format of our tests, look at the [inspiration](http://blog.ricardofilipe.com/post/react-enzyme-tdd-tutorial).
 
@@ -89,9 +89,9 @@ Run `bin/server` to deploy a hot-reloading webserver locally. If nothing else is
 
 ## Deployment instructions
 
-If you want to deploy to heroku, you'll need to change the settings in `./config/database.yml` to use postgres since sqlite3 is not available on heroku.
+If you want to deploy to heroku, you'll need to change the settings in `config/database.yml` to use postgres since sqlite3 is not available on heroku.
 
-In `./config/database.yml` you'll see:
+In `config/database.yml` you'll see:
 
 ```
 default: &default
