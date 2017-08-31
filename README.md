@@ -30,13 +30,13 @@ Before following the following installation instructions, make sure that you hav
   - Run `rails db:seed` to populate the database (and Algolia app!) with the starter data set (this will take a minute... be patient, stretch your legs :) )
   - Update the values for algolia_application_id, algolia_search_only_api_key, and algolia_index in `app/javascript/app/GLOBALS.js`
 
-Once the above is done, you'll be able to play with the app locally by running `bin/server` and visiting [localhost:5000](http://localhost:5000).
+Once the above is done, you'll be able to play with the app locally by running `bin/server` and visiting [localhost:5000](http://localhost:5000). Do not use the default rails server -- we need to make sure that webpack is running ;). 
 
 ## Configuration
 
 ### Backend
 
-Algolia credentials and index name will live in the .gitignored `config/application.yml` file and will be available as ENV vars to the rails app. You can use the file `config/application.example.yml` as a template. The application id and admin api key are used in  `config/initializers/algoliasearch.rb`. Index name and settings are set in `app/models/movie.rb`. If the app id, api keys, or index name are changed or updated, make sure to update the frontend as well.
+Algolia credentials and index name will live in the .gitignored `config/application.yml` file and will be available as ENV vars to the rails app. You can use the file `config/application.example.yml` as a template. The application id and admin api key are used in  `config/initializers/algoliasearch.rb`. Index name and settings are set in `app/models/movie.rb`. If the app id, api keys, or index name are changed or updated, make sure to update the frontend as well. Additionally, the server will need to be reset before the new environment variables take effect. Stop the server and restart it.
 
 ### Frontend
 
@@ -75,7 +75,7 @@ In general, a component named "Component" will have the following associated fil
   - Its tests `./app/javascript/app/__test__/Component.spec.js`
 
 
-## How to run the test suite
+## Tests
 
 To test the frontend you can run `npm test` or `npm  tdd`. The tdd command runs a the test command, with the watch flag. We're using Mocha/Chai with Enzyme and Sinon.
 
@@ -83,9 +83,9 @@ All React tests live in `./app/javascript/app/__test__/` and tests for a compone
 
 For more information on the format of our tests, look at the [inspiration](http://blog.ricardofilipe.com/post/react-enzyme-tdd-tutorial).
 
-## Local development
+## Local development and server
 
-Run `./bin/server` to deploy a hot-reloading webserver locally. If nothing else is running on localhost port 5000, you can visit [http://localhost:5000](http://localhost:5000) to play with the app.
+Run `bin/server` to deploy a hot-reloading webserver locally. If nothing else is running on localhost port 5000, you can visit [http://localhost:5000](http://localhost:5000) to play with the app. Do not use the default rails server -- we need to make sure that webpack is running ;).
 
 ## Deployment instructions
 
