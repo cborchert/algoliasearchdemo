@@ -33,8 +33,8 @@ describe('<NewMovieForm />', () => {
 
     });
     it('responds to add actor click', () => {
-        expect(wrapper.find('div').filter('.new-movie-form__add-actor')).to.have.length('1');
-        wrapper.find('div').filter('.new-movie-form__add-actor').simulate('click');
+        expect(wrapper.find('.new-movie-form__add-actor')).to.have.length('1');
+        wrapper.find('.new-movie-form__add-actor').simulate('click');
         wrapper.update();
         expect(wrapper.find('TextInput').filter('.new-movie-form__actor-input')).to.have.length('1');
         expect(wrapper.find('TextInput').filter('.new-movie-form__actor-image-input')).to.have.length('1');
@@ -46,8 +46,8 @@ describe('<NewMovieForm />', () => {
             actors: ['lorem', 'ipsum']
         });
         wrapper.update();
-        expect(wrapper.find('div').filter('.new-movie-form__remove-actor')).to.have.length('2');
-        wrapper.find('div').filter('.new-movie-form__remove-actor').first().simulate('click');
+        expect(wrapper.find('.new-movie-form__remove-actor')).to.have.length('2');
+        wrapper.find('.new-movie-form__remove-actor').first().simulate('click');
         wrapper.update();
         expect(wrapper.find('TextInput').filter('.new-movie-form__actor-input')).to.have.length('1');
         expect(wrapper.find('TextInput').filter('.new-movie-form__actor-image-input')).to.have.length('1');
@@ -66,8 +66,8 @@ describe('<NewMovieForm />', () => {
 
     });
     it('responds to add genre click', () => {
-        expect(wrapper.find('div').filter('.new-movie-form__add-genre')).to.have.length('1');
-        wrapper.find('div').filter('.new-movie-form__add-genre').simulate('click');
+        expect(wrapper.find('.new-movie-form__add-genre')).to.have.length('1');
+        wrapper.find('.new-movie-form__add-genre').simulate('click');
         wrapper.update();
         expect(wrapper.find('TextInput').filter('.new-movie-form__genre-input')).to.have.length('1');
         wrapper.setState({genre: []});
@@ -79,7 +79,7 @@ describe('<NewMovieForm />', () => {
         });
         wrapper.update();
         expect(wrapper.find('TextInput').filter('.new-movie-form__genre-input')).to.have.length('2');
-        wrapper.find('div').filter('.new-movie-form__remove-genre').first().simulate('click');
+        wrapper.find('.new-movie-form__remove-genre').first().simulate('click');
         wrapper.update();
         expect(wrapper.find('TextInput').filter('.new-movie-form__genre-input')).to.have.length('1');
         wrapper.setState({genre: []});
@@ -106,8 +106,8 @@ describe('<NewMovieForm />', () => {
 
     });
     it('responds to add alternative title click', () => {
-        expect(wrapper.find('div').filter('.new-movie-form__add-alternative-title')).to.have.length('1');
-        wrapper.find('div').filter('.new-movie-form__add-alternative-title').simulate('click');
+        expect(wrapper.find('.new-movie-form__add-alternative-title')).to.have.length('1');
+        wrapper.find('.new-movie-form__add-alternative-title').simulate('click');
         wrapper.update();
         expect(wrapper.find('TextInput').filter('.new-movie-form__alternative-title-input')).to.have.length('1');
         wrapper.setState({alternative_titles: []});
@@ -119,23 +119,11 @@ describe('<NewMovieForm />', () => {
         });
         wrapper.update();
         expect(wrapper.find('TextInput').filter('.new-movie-form__alternative-title-input')).to.have.length('2');
-        wrapper.find('div').filter('.new-movie-form__remove-alternative-title').first().simulate('click');
+        wrapper.find('.new-movie-form__remove-alternative-title').first().simulate('click');
         wrapper.update();
         expect(wrapper.find('TextInput').filter('.new-movie-form__alternative-title-input')).to.have.length('1');
         wrapper.setState({alternative_titles: []});
         wrapper.update();
-    });
-    it('enables/disables submit button', () => {
-        expect(wrapper.find('button.new-movie-form__submit')).to.have.length('1');
-        expect(wrapper.find('button.new-movie-form__submit').is('.button--disabled')).to.equal(true);
-    });
-    it('renders error if no title', () => {
-        expect(wrapper.find('.new-movie-form__errors')).to.have.length('1');
-        expect(wrapper.find('.new-movie-form__error')).to.have.length('1');
-        wrapper.setState({title: 'Hello World'});
-        wrapper.update();
-        expect(wrapper.find('.new-movie-form__errors')).to.have.length('0');
-        expect(wrapper.find('.new-movie-form__error')).to.have.length('0');
     });
     it('has an advanced field panel', () => {
         expect(wrapper.find('.new-movie-form__advanced')).to.have.length('1');
@@ -156,7 +144,7 @@ describe('<NewMovieForm />', () => {
     it('passes correct props to movie preview', () => {
         wrapper.setState({
             title: 'Hello World',
-            color: 'red',
+            color: '#ff0000',
             image: 'http://i695.photobucket.com/albums/vv311/salem_apocalypse/takethis-1.jpg',
             actors: [
                 'Steve Carrell', 'Olivia Wilde'
@@ -177,7 +165,7 @@ describe('<NewMovieForm />', () => {
         wrapper.update();
         let theProps = wrapper.find(Movie).first().props().movieObject;
         expect(theProps.title).to.equal('Hello World');
-        expect(theProps.color).to.equal('red');
+        expect(theProps.color).to.equal('#ff0000');
         expect(theProps.image).to.equal('http://i695.photobucket.com/albums/vv311/salem_apocalypse/takethis-1.jpg');
         expect(theProps.actors).to.have.length('2');
         expect(theProps.actors[0]).to.equal('Steve Carrell');
