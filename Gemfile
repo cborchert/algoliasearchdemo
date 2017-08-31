@@ -8,13 +8,15 @@ end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.3'
-# Use sqlite3 as the database for Active Record
+# Use sqlite3 as the database for Active Record in development, postgresql in production/heroku
 group :production do
     gem 'pg'
 end
 group :development, :test do
     gem 'sqlite3'
 end
+# Use Figaro to keep keys secret and safe
+gem 'figaro'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets

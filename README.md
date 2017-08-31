@@ -18,12 +18,17 @@ We're using yarn for this project just because it seems to be a bit more reliabl
 
 ## Installation
 
+Before following the following installation instructions, make sure that you have created a new app  and index in algolia, and take note of the application id, search only api key, admin api key and index name. You'll need them to set things up correctly
+
   - Run `git clone https://github.com/cborchert/algoliasearchdemo.git`
   - Change to the package directory
   - Run `yarn install` to install all Javascript dependencies
   - Run `bundle install` to install all Ruby dependencies
+  - Copy the file `config/application.example.yml` to `config/application.yml`
+  - Update the values for algolia_application_id, algolia_api_key (*this is the admin key*),  and algolia_index. Save the file.
   - Run `rails db:migrate` to initialize the Movie model
   - Run `rails db:seed` to populate the database (and Algolia app!) with the starter data set (this will take a minute... be patient, stretch your legs :) )
+  - Update the values for algolia_application_id, algolia_search_only_api_key, and algolia_index in `app/javascript/app/GLOBALS.js`
 
 Once the above is done, you'll be able to play with the app locally by running `bin/server` and visiting [localhost:5000](http://localhost:5000).
 
@@ -31,17 +36,18 @@ Once the above is done, you'll be able to play with the app locally by running `
 
 ### Backend
 
-Algolia credentials live in `config/initializers/algoliasearch.rb`. Index name and settings are set in `app/models/movie.rb`. If these are changed or updated, make sure to update the frontend as well.
+Algolia credentials and index name will live in the .gitignored `config/application.yml` file and will be available as ENV vars to the rails app. You can use the file `config/application.example.yml` as a template. The application id and admin api key are used in  `config/initializers/algoliasearch.rb`. Index name and settings are set in `app/models/movie.rb`. If the app id, api keys, or index name are changed or updated, make sure to update the frontend as well.
 
 ### Frontend
 
-Algolia search-only credentials live in `constructor` method of `app/javascript/app/APP.js`. Ensure that the frontend and the backend are talking to the same index and application!
+Algolia search-only credentials live in `app/javascript/app/GLOBALS.js` and used only in the `constructor` method of `app/javascript/app/APP.js`. Ensure that the frontend and the backend are talking to the same index and application!
 
-Algolia search settings are set up in the `constructor` and `runAlgoliaQuery` methods of `app/javascript/app/APP.js`
+Algolia search settings are set up in the `constructor` and `runAlgoliaQuery` methods of `app/javascript/app/App.js`
 
 ## Database initialization
 
-Make sure to run `rails db:migrate` to initialize the Movie model correctly and then `rails db:seed` to load the default data into the Movie model. This will take a minute since there are almost 6000 movies by default.
+Make sure that your configuration is set up before running this step (see above).
+Then run `rails db:migrate` to initialize the Movie model correctly and then `rails db:seed` to load the default data into the Movie model. This will take a minute since there are almost 6000 movies by default.
 
 If you ever need to repopulate the model/index from movies.json, use `rake algolia:populate_from_json`.
 
@@ -101,5 +107,10 @@ heroku buildpacks:add --index 1 heroku/nodejs
 heroku buildpacks:add --index 2 heroku/ruby
 git push heroku master
 ```
+You'll need to push up your keys to your heroku app using `figaro heroku:set -e production`
+
+You'll then need to run `rails db:migrate` and `rails db:seed` from the Heroku client to set up the database.
+
+*Phew* You should be ready to go, now.
 
 Or, you could save yourself the stress and use the [demo](https://algoliasearchdemo.herokuapp.com) ;-)

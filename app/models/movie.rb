@@ -6,8 +6,9 @@ class Movie < ApplicationRecord
     serialize :genre, JSON
 
     # Connect with Algolia
+    # The index name is defined in your config/application.yml file
     include AlgoliaSearch
-    algoliasearch index_name: "technical_test_movies" do
+    algoliasearch index_name: ENV["algolia_index"] do
         searchableAttributes ['title', 'alternative_titles', 'actors', 'genre']
         customRanking ['desc(rating)', 'desc(score)', 'desc(year)']
     end

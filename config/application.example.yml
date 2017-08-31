@@ -1,0 +1,13 @@
+# To make use of this, just copy this file to application.yml,
+#   put in your app id and ADMIN api key (not the search only key) below
+#   then uncomment the lines.
+# Make sure to update the frontend file app/javascript/app/GLOBALS.js
+#   is also updated with the appropriate information.
+#
+# This file is ignored by git, so your keys are secret and safe
+# The keys are used in config/initializers/algoliasearch.rb
+# The index name is used in app/models/movie.rb
+#
+# algolia_application_id: "XXXXXXXXXX"
+# algolia_api_key: "00000000000000000000000000000000"
+# algolia_index: "your_algolia_index"

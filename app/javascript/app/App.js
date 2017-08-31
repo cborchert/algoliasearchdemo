@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import algoliasearch from 'algoliasearch';
 import _ from 'lodash';
+import GLOBALS from './GLOBALS';
 import SearchBar from './components/SearchBar';
 import MovieGrid from './components/MovieGrid';
 import NewMovieForm from './components/NewMovieForm';
@@ -27,12 +28,10 @@ export default class App extends Component {
 
         //https://github.com/algolia/algoliasearch-client-javascript#nodejs--react-native--browserify--webpack
         //https://www.algolia.com/doc/api-client/javascript/getting-started/
-        //We are making the client available in order to be able to clear the cache
-        // this.client = algoliasearch('H6LCFN7QUX', 'fd23d200ccc13ded45de9820fce938de', {_useCache: false});
-        this.client = algoliasearch('H6LCFN7QUX', 'fd23d200ccc13ded45de9820fce938de');
-        this.index = this.client.initIndex('technical_test_movies');
+        this.client = algoliasearch(GLOBALS.algolia_application_id, GLOBALS.algolia_search_only_api_key);
+        this.index = this.client.initIndex(GLOBALS.algolia_index);
+        //Don't execute queries more than once every 50ms
         this.debouncedQuery = _.debounce(this.runAlgoliaQuery.bind(this), 50, {'leading': true});
-        // this.debouncedQuery = this.runAlgoliaQuery.bind(this);
 
     }
 
@@ -50,7 +49,7 @@ export default class App extends Component {
                 console.error(err);
                 return;
             }
-            console.log(content);
+            // console.log(content);
             //Let's remove any hits that match our deleted indices (since we might be pulling up old data!)
             let hits = content.hits.filter(hit => this.state.deletedIndices.indexOf(hit.objectID) == -1);
             // console.log(hits)
@@ -59,18 +58,14 @@ export default class App extends Component {
     }
 
     clearCache() {
-        // console.log('updating results');
         this.client.clearCache();
         this.index.clearCache();
-        //This requires between 1000 and 3000 ms to be searchable -- how do we deal with this without interfering?
     }
 
     handleSearchChange(event) {
         let query = event.target.value;
 
         this.setState({searchValue: query});
-
-        // this.runAlgoliaQuery(query);
         this.debouncedQuery(query);
     }
     addMovie(movieObject) {
@@ -80,11 +75,9 @@ export default class App extends Component {
     }
 
     openForm() {
-        // this.setState({formOpen: true})
         this.props.history.push('/new');
     }
     closeForm() {
-        // this.setState({formOpen: false})
         this.props.history.push('/');
     }
 
@@ -100,7 +93,6 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        // this.runAlgoliaQuery(this.state.searchValue);
         this.debouncedQuery(this.state.searchValue);
         //polling with a cleared cache every 2.5 seconds in order to guarantee that added and deleted movies are shown correctly...
         let interval = setInterval(() => {
