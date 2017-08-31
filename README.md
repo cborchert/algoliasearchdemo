@@ -25,12 +25,12 @@ Before following the following installation instructions, make sure that you hav
   - Run `yarn install` to install all Javascript dependencies
   - Run `bundle install` to install all Ruby dependencies
   - Copy the file `config/application.example.yml` to `config/application.yml`
-  - Update the values for algolia_application_id, algolia_api_key (*this is the admin key*),  and algolia_index. Save the file.
+  - Update the values for algolia_application_id, algolia_api_key (*this is the admin key*),  and algolia_index in the new `config/application.yml` and save.
   - Run `rails db:migrate` to initialize the Movie model
   - Run `rails db:seed` to populate the database (and Algolia app!) with the starter data set (this will take a minute... be patient, stretch your legs :) )
   - Update the values for algolia_application_id, algolia_search_only_api_key, and algolia_index in `app/javascript/app/GLOBALS.js`
 
-Once the above is done, you'll be able to play with the app locally by running `bin/server` and visiting [localhost:5000](http://localhost:5000). Do not use the default rails server -- we need to make sure that webpack is running ;). 
+Once the above is done, you'll be able to play with the app locally by running `bin/server` and visiting [localhost:5000](http://localhost:5000). Do not use the default rails server -- we need to make sure that webpack is running ;).
 
 ## Configuration
 
