@@ -5,16 +5,13 @@
     @extend .clearfix;
     display: inline-block;
     text-align: left;
-    // display: block;
-    // float: left;
+    overflow-y: hidden;
     font-size: 1.6rem;
-    // width: 25%;
     width: calc(250px);
     max-width: calc( 100% - 2rem);
     height: calc(360px);
     vertical-align: middle;
     margin: 0.5rem;
-    // flex-grow: 1;
     box-sizing: border-box;
     transition: width 200ms;
     box-shadow: $boxShadow;
@@ -48,7 +45,7 @@
         bottom: 0;
         right: 0;
         padding: 2.5rem;
-        overflow-y: scroll;
+        overflow-y: hidden;
     }
 
     &__image-container {
@@ -130,6 +127,10 @@
         }
     }
 
+    &__details {
+        padding-bottom: 2.5rem;
+    }
+
     &__expand {
         top: 1rem;
         right: 0.8rem;
@@ -195,6 +196,10 @@
             filter: blur(0px);
             opacity: 1;
             margin: 0 10px 5px 0;
+        }
+
+        .movie__inner {
+            overflow-y: auto;
         }
     }
 }

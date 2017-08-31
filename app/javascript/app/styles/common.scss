@@ -177,9 +177,10 @@ input {
     border-bottom: 2px solid lighten($blue, 40%);
     font-size: 1.6rem;
     line-height: 1.6rem;
+    height: 2.6rem;
     color: $black;
     display: block;
-    margin: 0 0 1rem;
+    margin: 0.2rem 0.2rem 1rem;
     padding: 0.5rem 0.1rem 0.1rem;
     transition: border-bottom 200ms;
     width: 100%;

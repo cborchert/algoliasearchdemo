@@ -20,12 +20,16 @@
         top: 50%;
     }
 
-    &__inner {
+    &__inner-container {
         height: 600px;
-        max-height: calc(100vh - 4rem);
+        overflow-y: auto;
+        box-sizing: border-box;
+    }
+
+    &__inner {
+        min-height: 600px;
         padding: 2rem 2rem 8rem;
         box-sizing: border-box;
-        overflow-y: auto;
     }
 
     &__advanced {
@@ -128,21 +132,19 @@
         // right: 1rem;
         box-sizing: border-box;
         z-index: 1000;
-        // @media screen and (max-width: 550px) {
         width: 100%;
         bottom: 0;
-        right: 0;
+        right: 2.5rem;
         padding: 1rem;
         background: rgba(255,255,255,0.7);
-        width: 100%;
+        width: calc(100% - 2.5rem);
         text-align: right;
-        // }
     }
 
     &__close {
         position: absolute;
-        top: 1rem;
-        right: 1rem;
+        top: 2rem;
+        right: 2rem;
         font-size: 1.4rem;
         opacity: 0.7;
         cursor: pointer;

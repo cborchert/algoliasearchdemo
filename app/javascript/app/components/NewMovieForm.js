@@ -253,42 +253,45 @@ class NewMovieForm extends Component {
         }
         return (
             <div className={formClasses}>
-                <div className="new-movie-form__inner">
-                    <h2>New Movie</h2>
+                <div className="new-movie-form__inner-container">
 
-                    <div className="new-movie-form__movie-preview">
-                        <h5>Preview</h5>
-                        <Movie className="new-movie-form__movie" movieObject={moviePreviewObject} disableDelete={true}/>
-                    </div>
+                    <div className="new-movie-form__inner">
+                        <h2>New Movie</h2>
 
-                    <TextInput className="new-movie-form__title-input" label="title" keyName="title" onChange={this.handleChange.bind(this)} value={this.state.title} hidePlaceholder={true} required={true} reportErrors={this.handleErrors.bind(this)}/>
-                    <TextInput className="new-movie-form__image-input" label="image url" keyName="image" onChange={this.handleChange.bind(this)} value={this.state.image} hidePlaceholder={true} reportErrors={this.handleErrors.bind(this)}/>
-                    <TextInput className="new-movie-form__color-input" label="color" keyName="color" onChange={this.handleChange.bind(this)} value={this.state.color} features={['previewColor']} type="color" placeholder="Enter a valid html color" required={true} reportErrors={this.handleErrors.bind(this)}/>
-                    <div className={advancedClasses}>
-                        <button className="button new-movie-form__toggle-advanced" onClick={this.toggleAdvanced.bind(this)} title={advancedToggleButtonInner} aria-label={advancedToggleButtonInner}>
-                            {advancedToggleButtonInner}
-                        </button>
-                        <div className="new-movie-form__advanced__inner">
-                            <div className="new-movie-form__repeater-field-container">
-                                <h5>Alternative Titles
-                                    <span className="icon-plus new-movie-form__repeater-field-add new-movie-form__add-alternative-title" onClick={this.addAlternativeTitle.bind(this)} title="Add alternative title to movie" aria-label="Add alternative title to movie"/></h5>
-                                {alternativeTitlesInputs}
+                        <div className="new-movie-form__movie-preview">
+                            <h5>Preview</h5>
+                            <Movie className="new-movie-form__movie" movieObject={moviePreviewObject} disableDelete={true}/>
+                        </div>
+
+                        <TextInput className="new-movie-form__title-input" label="title" keyName="title" onChange={this.handleChange.bind(this)} value={this.state.title} hidePlaceholder={true} required={true} reportErrors={this.handleErrors.bind(this)}/>
+                        <TextInput className="new-movie-form__image-input" label="image url" keyName="image" onChange={this.handleChange.bind(this)} value={this.state.image} hidePlaceholder={true} reportErrors={this.handleErrors.bind(this)}/>
+                        <TextInput className="new-movie-form__color-input" label="color" keyName="color" onChange={this.handleChange.bind(this)} value={this.state.color} features={['previewColor']} type="color" placeholder="Enter a valid html color" required={true} reportErrors={this.handleErrors.bind(this)}/>
+                        <div className={advancedClasses}>
+                            <button className="button new-movie-form__toggle-advanced" onClick={this.toggleAdvanced.bind(this)} title={advancedToggleButtonInner} aria-label={advancedToggleButtonInner}>
+                                {advancedToggleButtonInner}
+                            </button>
+                            <div className="new-movie-form__advanced__inner">
+                                <div className="new-movie-form__repeater-field-container">
+                                    <h5>Alternative Titles
+                                        <span className="icon-plus new-movie-form__repeater-field-add new-movie-form__add-alternative-title" onClick={this.addAlternativeTitle.bind(this)} title="Add alternative title to movie" aria-label="Add alternative title to movie"/></h5>
+                                    {alternativeTitlesInputs}
+
+                                </div>
+                                <div className="new-movie-form__repeater-field-container">
+                                    <h5>Actors<span className="icon-plus new-movie-form__repeater-field-add new-movie-form__add-actor" onClick={this.addActor.bind(this)} title="Add actor to movie" aria-label="Add actor to movie"/></h5>
+                                    {actorsInputGroups}
+
+                                </div>
+                                <div className="new-movie-form__repeater-field-container">
+                                    <h5>Genres<span className="icon-plus new-movie-form__repeater-field-add new-movie-form__add-genre" onClick={this.addGenre.bind(this)} title="Add genre to movie" aria-label="Add genre to movie"/></h5>
+                                    {genresInputs}
+
+                                </div>
+                                <TextInput className="new-movie-form__rating-input" label="rating" keyName="rating" onChange={this.handleChange.bind(this)} value={this.state.rating} type="number" min="0" max="5" step="0.1" placeholder="Enter a rating between 0 and 5" reportErrors={this.handleErrors.bind(this)}/>
+                                <TextInput className="new-movie-form__year-input" label="year" keyName="year" onChange={this.handleChange.bind(this)} value={this.state.year} type="number" min="1800" step="1" placeholder="Enter a year after 1799" integer={true} reportErrors={this.handleErrors.bind(this)}/>
+                                <TextInput className="new-movie-form__score-input" label="score" keyName="score" onChange={this.handleChange.bind(this)} value={this.state.score} type="number" min="0" max="10" step="0.05" placeholder="Enter a score between 0 and 10" reportErrors={this.handleErrors.bind(this)}/>
 
                             </div>
-                            <div className="new-movie-form__repeater-field-container">
-                                <h5>Actors<span className="icon-plus new-movie-form__repeater-field-add new-movie-form__add-actor" onClick={this.addActor.bind(this)} title="Add actor to movie" aria-label="Add actor to movie"/></h5>
-                                {actorsInputGroups}
-
-                            </div>
-                            <div className="new-movie-form__repeater-field-container">
-                                <h5>Genres<span className="icon-plus new-movie-form__repeater-field-add new-movie-form__add-genre" onClick={this.addGenre.bind(this)} title="Add genre to movie" aria-label="Add genre to movie"/></h5>
-                                {genresInputs}
-
-                            </div>
-                            <TextInput className="new-movie-form__rating-input" label="rating" keyName="rating" onChange={this.handleChange.bind(this)} value={this.state.rating} type="number" min="0" max="5" step="0.1" placeholder="Enter a rating between 0 and 5" reportErrors={this.handleErrors.bind(this)}/>
-                            <TextInput className="new-movie-form__year-input" label="year" keyName="year" onChange={this.handleChange.bind(this)} value={this.state.year} type="number" min="1800" step="1" placeholder="Enter a year after 1799" integer={true} reportErrors={this.handleErrors.bind(this)}/>
-                            <TextInput className="new-movie-form__score-input" label="score" keyName="score" onChange={this.handleChange.bind(this)} value={this.state.score} type="number" min="0" max="10" step="0.05" placeholder="Enter a score between 0 and 10" reportErrors={this.handleErrors.bind(this)}/>
-
                         </div>
                     </div>
                 </div>
