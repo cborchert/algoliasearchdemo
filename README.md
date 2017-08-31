@@ -77,7 +77,7 @@ In general, a component named "Component" will have the following associated fil
 
 ## Tests
 
-To test the frontend you can run `npm test` or `npm  tdd`. The tdd command runs a the test command, with the watch flag. We're using Mocha/Chai with Enzyme and Sinon.
+To test the frontend you can run `yarn test` or `yarn tdd`. The tdd command runs a the test command, with the watch flag. We're using Mocha/Chai with Enzyme and Sinon.
 
 All React tests live in `app/javascript/app/__test__/` and tests for a component named COMPONENT can be found in `COMPONENT.spec.js`. In the same folder, globals and the dom are set up in `helpers.js` and `dom.js` respectively.
 
